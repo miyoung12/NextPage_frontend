@@ -1,10 +1,9 @@
 ---
 name: "\U0001F41B bug"
 about: 발생한 오류를 해결합니다.
-title: "[bug] "
+title: '[bug] '
 labels: ''
 assignees: ''
-
 ---
 
 ## 작업 내용 설명
