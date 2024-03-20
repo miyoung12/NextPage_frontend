@@ -1,10 +1,9 @@
 ---
 name: "\U0001F6E0️ setting"
 about: Docker 및 기타 환경을 수정합니다.
-title: "[setting] "
+title: '[setting] '
 labels: ''
 assignees: ''
-
 ---
 
 ## 작업 내용 설명
