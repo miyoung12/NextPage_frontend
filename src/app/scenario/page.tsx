@@ -2,7 +2,8 @@
 
 // import ParticleTutorial from "../components/ThreeParticles";
 import TreeGraph from '../scenario/_component/TreeGraph'
-// import Navbar from "../components/Navbar";
+import Navbar from '../_components/Navbar'
+import Background from '../_components/Background'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import ViewStoryModal from '../main/_component/ViewStoryModal'
@@ -90,9 +91,10 @@ const Scenario = () => {
 
   return (
     <div className="overflow-hidden">
+      <Background />
       <div className="flex w-[100vw] h-[100vh] flex-col justify-center items-center absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
         <div className="overflow-hidden flex flex-col w-full h-full">
-          {/* <Navbar /> */}
+          <Navbar />
           <TreeGraph openmodal={openModal} scenario={scenario} />
         </div>
       </div>

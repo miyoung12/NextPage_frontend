@@ -1,13 +1,24 @@
 'use client'
-
-import Image from 'next/image'
+import { useState, useRef } from 'react'
+import { useRecoilValue } from 'recoil'
 import { motion } from 'framer-motion'
+import Onboarding1 from '../app/_components/Onboarding1'
+import Onboarding2 from '../app/_components/Onboarding2'
+import Onboarding3 from '../app/_components/Onboarding3'
+import Onboarding4 from '../app/_components/Onboarding4'
+import Image from 'next/image'
+import book from '../../public/book.svg'
+import Background from '../app/_components/Background'
+import Navbar from '../app/_components/Navbar'
+import Link from 'next/link'
 
-export default function Home() {
+const LandingPage = () => {
+  const topScroll = useRef(null)
   return (
-    <div className="bg-black">
-      {/* <div ref={topScroll}> */}
-      <div className="fixed">{/* <ThreeParticles /> */}</div>
+    <div ref={topScroll}>
+      <div className="fixed">
+        <Background />
+      </div>
       <div className="flex gap-1 text-gray-400 text-[14px] absolute left-8 top-8">
         <svg
           className="w-[15px]"
@@ -75,11 +86,11 @@ export default function Home() {
           }}
         >
           <div className="flex relative w-[1100px] h-[275px] justify-center top-10">
-            <img
+            <Image
               className="flex w-5/6 absolute text-white "
-              src="/asset/book.svg"
+              src={book}
               alt="책 이미지"
-            ></img>
+            />
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -91,19 +102,17 @@ export default function Home() {
               }}
             >
               <div className="flex flex-col items-center gap-[10px]">
-                <button
-                  className="flex z-10 font-medium text-black w-[145px] h-[53px] mt-[30px] text-4xl bg-green-400 rounded-2xl justify-center items-center hover:bg-blue-500 hover:text-green-400"
-                  // onClick={handleClickStart}
-                >
-                  <span className="leading-none mt-[6px] ml-[4px]">START</span>
+                <button className="flex z-10 font-medium text-black w-[145px] h-[53px] mt-[30px] text-4xl bg-green-400 rounded-2xl justify-center items-center hover:bg-blue-500 hover:text-green-400">
+                  <Link href="/signup">
+                    <span className="leading-none mt-[6px] ml-[4px]">
+                      START
+                    </span>
+                  </Link>
                 </button>
+
                 <div className="h-[20px]">
-                  <span
-                    className="text-white text-[18px]"
-                    // style={{ display: !user.nickname ? 'none' : 'block' }}
-                  >
-                    {/* <span className="text-green-400">{user.nickname}</span>님 */}
-                    환영합니다 !
+                  <span className="text-white text-[18px]">
+                    <span className="text-green-400">홍길동</span>님 환영합니다!
                   </span>
                 </div>
               </div>
@@ -136,13 +145,13 @@ export default function Home() {
         </motion.div>
       </div>
       <div className="pt-[960px]">
-        {/* <Onboarding2 />
-          <Onboarding1 />
-          <Onboarding3 />
-          <Onboarding4 topScroll={topScroll} /> */}
+        <Onboarding2 />
+        <Onboarding1 />
+        <Onboarding3 />
+        <Onboarding4 topScroll={topScroll} />
       </div>
-      {/* <NicknameModal isOpen={isModalOpen} onClose={closeModal} /> */}
-      {/* </div> */}
     </div>
   )
 }
+
+export default LandingPage
