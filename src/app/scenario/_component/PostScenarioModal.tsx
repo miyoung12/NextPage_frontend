@@ -1,19 +1,16 @@
 import React, { useRef, useEffect, useState, ChangeEvent } from 'react'
 import axios from 'axios'
 import { motion } from 'framer-motion'
-import Carousel from '../_component/ImgCarousel'
-// import Carousel from "./ImgCarousel";
-// import Lottie from "lottie-react";
-// import lottieData from "../assets/lottie.json";
-import { useRecoilValue } from 'recoil'
-// import { userState } from "../recoil/atoms";
+import Carousel from '@/app/_components/ImgCarousel'
+import Lottie from 'lottie-react'
+import lottieData from '@/../public/lottie.json'
 
-interface CreateScenarioModalProps {
+interface PostScenarioModalProps {
   isOpen: boolean
   closeModal: () => void
   handleUpdate: () => void
 }
-const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
+const PostScenarioModal: React.FC<PostScenarioModalProps> = ({
   isOpen,
   closeModal,
   handleUpdate,
@@ -32,8 +29,6 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
   }
   const modalRef = useRef<HTMLDivElement>(null)
   const [content, setContentValue] = useState('')
-  const [taskID, setTaskID] = useState('')
-  const [imageUrl, setImageUrl] = useState<string>('')
   const [images, setImages] = useState<string[]>([])
   const [characterCount, setCharacterCount] = useState<number>(0)
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0)
@@ -45,7 +40,7 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
     if (error.request.status >= 500) {
       console.log('status: ', error.request.status)
       alert('네트워크 연결이 불안정합니다.')
-      setIsGenerating(false) // Lottie 보여주기 중지
+      // setIsGenerating(false) // Lottie 보여주기 중지
     }
   }
 
@@ -72,21 +67,26 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
       // console.log(characterCount);
     }
   }
+
   const handleClick = () => {
     if (generationCount < 3) {
       CreateScenario() // 이미지 생성 요청
-      // setIsGenerating(true); // Lottie 보여주기 시작
-      // setGenerationCount((count) => count + 1);
+      // setIsGenerating(true) // Lottie 보여주기 시작
+      setGenerationCount((count) => count)
     } else {
       alert('이미지 생성 요청은 최대 3회까지 가능합니다.')
     }
   }
+
+  //이미지 캐러셀의 현재 인덱스 변경 이벤트를 처리
   const handleCurrentIndexChange = (index: number) => {
     setCurrentImageIndex(index)
     // currentIndex를 활용한 로직을 추가하세요.
     // console.log("image_index: ", index);
   }
+
   const CreateScenario = async () => {
+    //이미지 생성 API 호출
     try {
       if (!content.trim()) {
         // content가 공백인 경우 400에러 방지
@@ -94,49 +94,15 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
         alert('문장을 입력하세요!')
       } else {
         setIsGenerating(true) // Lottie 보여주기 시작
-        const response = await axios.post(`/api/v1/stories/images`, {
-          content,
-        })
-        if (response.status === 202) {
-          console.log('이미지 생성 요청 성공!')
-
-          // 응답이 성공적인 경우 상태 업데이트
-          setContentValue(content)
-          setTaskID(response.data.task_id)
-          setCurrentImageIndex(0)
-        }
-      }
-    } catch (error) {
-      console.error('이미지 생성 요청 중 에러: ', error)
-      errorEvent(error)
-    }
-  }
-
-  useEffect(() => {
-    // console.log("currentIndex: ", currentImageIndex);
-  }, [currentImageIndex])
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      // 이미지가 생성되었을 때만 ShowImage 함수 호출
-      if (taskID) {
-        ShowImage()
-      }
-    }, 5000)
-    const ShowImage = async () => {
-      try {
-        if (!taskID) {
-          console.log('taskID가 없습니다.')
-          return
-        }
-        const response = await axios.get(`/api/v1/stories/images`, {
+        const response = await axios.post(`/api/v2/stories/images`, null, {
           params: {
-            task_id: taskID,
+            content: content,
           },
         })
-
+        // console.log(response.data.message)
         if (response.status === 200) {
-          const newImageUrl = response.data.imageUrl.imageUrl
+          console.log('이미지 생성 성공!')
+          const newImageUrl = response.data.data
           console.log('newImageUrl: ', newImageUrl)
 
           if (newImageUrl !== undefined) {
@@ -144,50 +110,45 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
             // 이전에 생성한 이미지 배열에 추가
             setImages((prevImages) => [...prevImages, newImageUrl])
 
-            // setImageUrl(newImageUrl);
-            const imageUrl = response.data.imageUrl
-            setImageUrl(imageUrl.imageUrl)
-            console.log('imageUrl: ', imageUrl.imageUrl)
-
-            // 이미지가 정상적으로 받아졌으므로 타이머 중지
-            clearInterval(intervalId)
             setGenerationCount((count) => count + 1) // 횟수 1 감소
             setIsGenerating(false) // Lottie 숨기기
+
+            setContentValue(content)
             setCurrentImageIndex(0)
           } else {
-            clearInterval(intervalId) // 인터벌 끝내기
             alert('생성에 실패하였습니다. 다시 시도해주세요.')
             setIsGenerating(false) // Lottie 숨기기
           }
         }
-      } catch (error) {
-        console.error('이미지 불러오기 중 에러: ', error)
-        errorEvent(error)
-      }
-      // console.log(images);
-    }
-    return () => clearInterval(intervalId)
-  }, [taskID])
 
-  const handleClickOk = async () => {
+        // 응답이 성공적인 경우 상태 업데이트
+        setContentValue(content)
+        // setTaskID(response.data.task_id)
+        setCurrentImageIndex(0)
+      }
+    } catch (error) {
+      console.error('이미지 생성 요청 중 에러: ', error)
+      errorEvent(error)
+    }
+  }
+
+  const handleClickSave = async () => {
     const selectedImageUrl = images[currentImageIndex] || '' // 현재 선택된 이미지
     setIsGenerating(true) // Lottie 보여주기 시작
     try {
-      const storiesResponse = await axios.post(
-        `http://localhost:8080/api/v2/stories/`,
-        {
-          // user_id: userId,
-          content,
-          imageUrl: selectedImageUrl,
-          // parent_story: -1,
+      const response = await axios.post(`/api/v2/stories`, {
+        params: {
+          parentId: null,
         },
-      )
+        imageUrl: selectedImageUrl,
+        content: content,
+      })
 
       // 성공적으로 응답을 받았을 때 처리
-      if (storiesResponse.status === 201) {
-        console.log(storiesResponse.data.message)
-        console.log(storiesResponse.data.data)
-        handleUpdate()
+      if (response.status === 201) {
+        console.log(response.data.message)
+        console.log(response.data.data)
+        await handleUpdate()
         closeModal()
       }
     } catch (error) {
@@ -246,10 +207,11 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
         <div className="relative flex flex-col w-full h-full justify-center items-center gap-[17px] bg-[#000000d2] border-2 border-t-0 border-white text-white">
           {isGenerating && (
             <div className="absolute z-50 gap-[10px] p-[70px] bg-gray-500 bg-opacity-50 w-full h-[615px]">
-              {/* <Lottie
-                animationData={lottieData}
+              <Lottie
                 onComplete={handleLottieComplete}
-              /> */}
+                animationData={lottieData}
+                // options={defaultOptions}
+              />
             </div>
           )}
           <svg
@@ -283,7 +245,7 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
           <div className="flex flex-col justify-center items-center w-[350px] h-full">
             <div className="flex flex-col gap-1">
               <div className="w-[350px] h-[350px] z-10 bg-[#6f7373]">
-                {imageUrl && (
+                {images && (
                   <Carousel
                     images={images}
                     onCurrentIndexChange={handleCurrentIndexChange}
@@ -322,7 +284,7 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
                 </button>
                 <button
                   className="w-[100px] text-center leading-[1.8rem] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[17px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
-                  onClick={handleClickOk}
+                  onClick={handleClickSave}
                 >
                   SAVE
                 </button>
@@ -334,4 +296,4 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
     </div>
   )
 }
-export default CreateScenarioModal
+export default PostScenarioModal

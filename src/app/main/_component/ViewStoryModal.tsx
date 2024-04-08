@@ -22,16 +22,18 @@ const StoryModal: React.FC<StoryModalProps> = ({
   isCreateModalOpen,
 }) => {
   const [story, setStory] = useState<{
-    user_nickname: string
+    id: number
     content: string
-    image_url: string
-    child_id: number[]
-    child_content: string[]
+    imageUrl: string
+    userNickname: string
+    parentId: number
+    childId: string[]
+    childContent: string[]
   } | null>(null)
   const modalRefs = [
     useRef<HTMLDivElement>(null),
-    useRef<HTMLDivElement>(null),
-    useRef<HTMLDivElement>(null),
+    // useRef<HTMLDivElement>(null),
+    // useRef<HTMLDivElement>(null),
   ]
   const [isAnimationComplete1, setIsAnimationComplete1] = useState(false)
   const [isAnimationComplete2, setIsAnimationComplete2] = useState(false)
@@ -69,16 +71,18 @@ const StoryModal: React.FC<StoryModalProps> = ({
     console.log('**story_id: ', rootId)
     const storyAPI = async () => {
       try {
-        const response = await axios.get(`/api/v1/stories/${rootId.rootId}/`)
+        const response = await axios.get(`/api/v2/stories/details/${story?.id}`)
         console.log('response: ', response.data.data)
         if (response.data.data) {
           // 데이터가 존재할 때만 state 업데이트
           setStory({
-            user_nickname: response.data.data.user_nickname,
+            id: response.data.data.id,
             content: response.data.data.content,
-            image_url: response.data.data.image_url,
-            child_id: response.data.data.child_id,
-            child_content: response.data.data.child_content,
+            imageUrl: response.data.data.imageUrl,
+            userNickname: response.data.data.userNickname,
+            parentId: response.data.data.parentId,
+            childId: response.data.data.childId,
+            childContent: response.data.data.childContent,
           })
         }
       } catch (error) {
@@ -133,7 +137,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
               PAGE <span className="text-white">{rootId.page}</span>{' '}
             </span>
             <div className="text-gray-400 text-[14px] absolute bottom-[8px] right-[32px]">
-              @ {story?.user_nickname ? `${story.user_nickname}` : 'LOADING...'}
+              @ {story?.userNickname ? `${story.userNickname}` : 'LOADING...'}
             </div>
           </div>
           <div className="flex flex-col w-full h-[615px] justify-center items-center gap-[16px] bg-[#000000ae] text-white border-2 border-gray-400 ">
@@ -142,7 +146,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
               style={{
                 filter: 'drop-shadow(0px 0px 6px rgba(255, 255, 255, 0.615))',
               }}
-              src={story?.image_url ? `${story.image_url}` : ''}
+              src={story?.imageUrl ? `${story.imageUrl}` : ''}
               alt="Image"
             />
             <div className="flex flex-col items-center w-[330px] gap-[10px]">
@@ -160,15 +164,16 @@ const StoryModal: React.FC<StoryModalProps> = ({
         </motion.div>
         <div className="flex flex-col justify-center gap-[80px] z-1">
           {/* NEXT Story Modal1 */}
-          {story?.child_id && story.child_id[0] !== -1 && (
+          {/* {story?.childId && story.childId[0] !== -1 && ( */}
+          {story?.childId && story.childId[0] && (
             <motion.div
               onClick={() => {
                 if (isAnimationComplete1) {
                   // 애니메이션이 완료된 상태에서만 클릭 이벤트 처리
                   setIsAnimationComplete1(false)
                   handleClickStory(
-                    story?.child_id && story.child_id[0]
-                      ? story.child_id[0]
+                    story?.childId && story.childId[0]
+                      ? Number(story.childId[0])
                       : -1,
                     rootId.page + 1,
                   )
@@ -200,8 +205,8 @@ const StoryModal: React.FC<StoryModalProps> = ({
                 </div>
                 <div className="flex flex-col w-full h-[220px] justify-center items-center bg-[#000000ae] text-white border-2 border-gray-400 ">
                   <div className="w-[330px] h-[155px] p-[10px] border-dashed border-2 bg-black border-gray-500">
-                    {story?.child_content && story.child_content[0] ? (
-                      <p>{story.child_content[0]}</p>
+                    {story?.childContent && story.childContent[0] ? (
+                      <p>{story.childContent[0]}</p>
                     ) : (
                       <span className="flex justify-center leading-[8rem] text-gray-400 hover:text-white hover:scale-110">
                         새로운 이야기를 만들어보세요 !
@@ -217,7 +222,9 @@ const StoryModal: React.FC<StoryModalProps> = ({
             onClick={() => {
               if (isAnimationComplete2) {
                 handleClickStory(
-                  story?.child_id && story.child_id[1] ? story.child_id[1] : -1,
+                  story?.childId && story.childId[1]
+                    ? Number(story.childId[1])
+                    : -1,
                   rootId.page + 1,
                 )
                 setNextModalKey((prevKey) => prevKey + 1)
@@ -248,8 +255,8 @@ const StoryModal: React.FC<StoryModalProps> = ({
               </div>
               <div className="flex flex-col w-full h-[220px] justify-center items-center bg-[#000000ae] text-white border-2 border-gray-400 ">
                 <div className="w-[330px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 bg-black hover:text-white ">
-                  {story?.child_content && story.child_content[1] ? (
-                    <p>{story.child_content[1]}</p>
+                  {story?.childContent && story.childContent[1] ? (
+                    <p>{story.childContent[1]}</p>
                   ) : (
                     <span className="flex justify-center leading-[8rem] text-gray-400 hover:text-white hover:scale-110">
                       새로운 이야기를 만들어보세요 !

@@ -115,8 +115,8 @@ const ScenarioSlide: React.FC<ScenarioSlideProps> = ({
   }, [stories])
 
   useEffect(() => {
-    console.log('currentSlideIndex: ', currentSlideIndex)
-    console.log('stories: ', stories[currentSlideIndex])
+    // console.log('currentSlideIndex: ', currentSlideIndex)
+    // console.log('stories: ', stories[currentSlideIndex])
     // console.log(stories[currentSlideIndex].imageUrl)
     onSlideClick(currentSlideIndex)
   }, [currentSlideIndex])

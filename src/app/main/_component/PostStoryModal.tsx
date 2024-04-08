@@ -1,11 +1,9 @@
 import React, { useRef, useEffect, useState, ChangeEvent } from 'react'
 import axios from 'axios'
 import { motion } from 'framer-motion'
-// import Carousel from "../components/ImgCarousel";
-// import Lottie from "lottie-react";
-// import lottieData from "../assets/lottie.json";
-import { useRecoilValue } from 'recoil'
-// import { userState } from "../recoil/atoms";
+import Carousel from '@/app/_components/ImgCarousel'
+import Lottie from 'lottie-react'
+import lottieData from '@/../public/lottie.json'
 
 interface PostStoryModalProps {
   parentStoryID: number
@@ -22,9 +20,8 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
 }) => {
   const modalRef = useRef<HTMLDivElement>(null)
   //   const userId = useRecoilValue(userState).user_id;
+  const [parentId, setParentId] = useState()
   const [content, setContentValue] = useState('')
-  const [taskID, setTaskID] = useState('')
-  const [imageUrl, setImageUrl] = useState<string>('')
   const [images, setImages] = useState<string[]>([])
   const [characterCount, setCharacterCount] = useState<number>(0)
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0)
@@ -81,7 +78,7 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
     if (generationCount < 3) {
       CreateScenario() // 이미지 생성 요청
       // setIsGenerating(true); // Lottie 보여주기 시작
-      // setGenerationCount((count) => count + 1);
+      setGenerationCount((count) => count)
     } else {
       alert('이미지 생성 요청은 최대 3회까지 가능합니다.')
     }
@@ -99,44 +96,13 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
         alert('문장을 입력하세요!')
       } else {
         setIsGenerating(true) // Lottie 보여주기 시작
-        const response = await axios.post(`/api/v1/stories/images`, {
-          content,
-        })
-        if (response.status === 202) {
-          console.log('이미지 생성 요청 성공!')
-
-          // 응답이 성공적인 경우 상태 업데이트
-          setContentValue(content)
-          setTaskID(response.data.task_id)
-          console.log(response.data.task_id)
-        }
-      }
-    } catch (error) {
-      console.error('이미지 생성 요청 중 에러: ', error)
-      errorEvent(error)
-    }
-  }
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      // 이미지가 생성되었을 때만 ShowImage 함수 호출
-      if (taskID) {
-        ShowImage()
-      }
-    }, 5000)
-    const ShowImage = async () => {
-      try {
-        if (!taskID) {
-          console.log('taskID가 없습니다.')
-          return
-        }
-        const response = await axios.get(`/api/v1/stories/images`, {
+        const response = await axios.post(`/api/v2/stories/images`, {
           params: {
-            task_id: taskID,
+            content: content,
           },
         })
-
         if (response.status === 200) {
+          console.log('이미지 생성 성공!')
           const newImageUrl = response.data.image_url.image_url
           console.log('newImageUrl: ', newImageUrl)
 
@@ -145,54 +111,44 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
             // 이전에 생성한 이미지 배열에 추가
             setImages((prevImages) => [...prevImages, newImageUrl])
 
-            // setImageUrl(newImageUrl);
-            const imageUrl = response.data.image_url
-            setImageUrl(imageUrl.image_url)
-            console.log('imageUrl: ', imageUrl.image_url)
-
-            // 이미지가 정상적으로 받아졌으므로 타이머 중지
-            clearInterval(intervalId)
             setGenerationCount((count) => count + 1) // 횟수 1 감소
             setIsGenerating(false) // Lottie 숨기기
+
+            setContentValue(content)
             setCurrentImageIndex(0)
           } else {
-            clearInterval(intervalId) // 인터벌 끝내기
-            // alert("생성에 실패하였습니다. 다시 시도해주세요.");
-            // alert(response.data.image_url.error);
             alert('적절하지 못한 내용입니다. 다시 입력해주세요.')
             setIsGenerating(false) // Lottie 숨기기
           }
         }
-      } catch (error) {
-        console.error('이미지 불러오기 중 에러: ', error)
-        errorEvent(error)
-      }
-      console.log(images)
-    }
-    return () => clearInterval(intervalId)
-  }, [taskID])
 
-  const handleClickOk = async () => {
-    // console.log("parent: ", parentStoryID);
-    const selectedImageUrl = images[currentImageIndex]
+        // 응답이 성공적인 경우 상태 업데이트
+        setContentValue(content)
+        setCurrentImageIndex(0)
+      }
+    } catch (error) {
+      console.error('이미지 생성 요청 중 에러: ', error)
+      errorEvent(error)
+    }
+  }
+
+  const handleClickSave = async () => {
+    const selectedImageUrl = images[currentImageIndex] || ''
     // Ok 버튼 클릭 시 /api/v1/stories/ 요청
     setIsGenerating(true) // Lottie 보여주기 시작
     try {
-      const storiesResponse = await axios.post(
-        `http://localhost:8080/api/v2/stories/`,
-        {
-          // user_id: userId,
-          content,
-          imageUrl,
-          // image_url: selectedImageUrl,
-          // parent_story: parentStoryID,
+      const response = await axios.post(`/api/v2/stories`, {
+        params: {
+          parentId,
         },
-      )
+        imageUrl: selectedImageUrl,
+        content: content,
+      })
 
       // 성공적으로 응답을 받았을 때 처리
-      if (storiesResponse.status === 201) {
-        console.log(storiesResponse.data.message)
-        console.log(storiesResponse.data.data)
+      if (response.status === 201) {
+        console.log(response.data.message)
+        console.log(response.data.data)
         closeModal()
       }
     } catch (error) {
@@ -251,10 +207,10 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
         <div className="relative flex flex-col w-full h-full justify-center items-center gap-[17px] bg-[#000000ae] border-2 border-t-0 border-white text-white">
           {isGenerating && (
             <div className="absolute z-50 gap-[10px] p-[70px] bg-gray-500 bg-opacity-50 w-full h-[615px]">
-              {/* <Lottie
+              <Lottie
                 animationData={lottieData}
                 onComplete={handleLottieComplete}
-              /> */}
+              />
             </div>
           )}
           <svg
@@ -288,12 +244,12 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
           <div className="flex flex-col justify-center items-center w-[350px] h-full">
             <div className="flex flex-col gap-1">
               <div className="w-[350px] h-[350px] z-10 bg-[#6f7373]">
-                {/* {imageUrl && (
+                {images && (
                   <Carousel
                     images={images}
                     onCurrentIndexChange={handleCurrentIndexChange}
                   />
-                )} */}
+                )}
               </div>
               <div className="flex justify-center text-green-400 text-[12px] leading-[20px]">
                 {images.length ? currentImageIndex + 1 : 0}
@@ -327,7 +283,7 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
                 </button>
                 <button
                   className="w-[100px] text-center pt-[1px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[18px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
-                  onClick={handleClickOk}
+                  onClick={handleClickSave}
                 >
                   SAVE
                 </button>

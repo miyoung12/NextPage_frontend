@@ -1,9 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 import { useRef, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Navigator } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 
 interface ViewScenarioModalProps {
   isOpen: boolean
@@ -18,10 +17,6 @@ const ViewScenarioModal: React.FC<ViewScenarioModalProps> = ({
 }) => {
   //   const navigate = useNavigate()
   const [story, setStory] = useState<{
-    // userNickname: string
-    // content: string
-    // image_url: string
-    // childContent: string[]
     id: number
     content: string
     imageUrl: string
@@ -52,16 +47,10 @@ const ViewScenarioModal: React.FC<ViewScenarioModalProps> = ({
   useEffect(() => {
     const ShowRootScenario = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/v2/stories/details/${storyId}`,
-        )
+        const response = await axios.get(`/api/v2/stories/details/${storyId}`)
         if (response.status === 200) {
           console.log('단일 시나리오 조회')
           setStory({
-            // userNickname: response.data.data.userNickname,
-            // content: response.data.data.content,
-            // image_url: response.data.data.image_url,
-            // childContent: response.data.data.childContent,
             id: response.data.data.id,
             content: response.data.data.content,
             imageUrl: response.data.data.imageUrl,
@@ -82,9 +71,11 @@ const ViewScenarioModal: React.FC<ViewScenarioModalProps> = ({
     }
   }, [])
 
+  const router = useRouter()
+
   const handleOkButtonClick = () => {
-    // const rootId = storyId
-    // navigator(`/scenario`)
+    const rootId = storyId
+    router.push(`/scenario/${rootId}`)
   }
 
   useEffect(() => {
