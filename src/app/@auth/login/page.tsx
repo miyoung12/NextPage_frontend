@@ -1,9 +1,10 @@
 import LoginModal from '../../_components/LoginModal'
 
-export default function page() {
+const LoginPage: React.FC = () => {
   return (
     <div>
       <LoginModal />
     </div>
   )
 }
+export default LoginPage

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 interface CarouselProps {
   images: string[]
@@ -41,12 +42,13 @@ const Carousel: React.FC<CarouselProps> = ({
       {images.map((image, index) => (
         <div key={index}>
           {image ? (
-            <img
-              className={`w-full h-full object-cover transition-transform duration-300 transform ${
-                index === currentIndex ? '' : 'hidden'
-              }`}
+            <Image
               src={image}
               alt={`Image ${index + 1}`}
+              width={500} // 이미지의 폭을 설정합니다.
+              height={300} // 이미지의 높이를 설정합니다.
+              // layout="responsive" // 반응형 이미지 레이아웃을 설정합니다.
+              className={`transition-transform duration-300 transform ${index === currentIndex ? '' : 'hidden'}`}
             />
           ) : (
             <p>Image</p>

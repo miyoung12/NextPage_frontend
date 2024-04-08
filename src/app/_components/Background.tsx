@@ -6,7 +6,7 @@ interface Particle {
   velocity: number
 }
 
-const ParticleTutorial: React.FC = () => {
+const Background: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
   const particles: Particle[] = []
@@ -132,4 +132,4 @@ const ParticleTutorial: React.FC = () => {
   return <div ref={containerRef}></div>
 }
 
-export default ParticleTutorial
+export default Background

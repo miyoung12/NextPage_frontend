@@ -33,7 +33,7 @@ const Scenario = () => {
   //     page: 0,
   //   }) // 클릭한 시나리오 조회
 
-  const [clickStoryId, setClickStoryId] = useState({ rootId: 0, page: 0 })
+  const [clickStoryId, setClickStoryId] = useState({ rootId: 2, page: 0 })
 
   const handleClickBack = () => {
     // 메인 페이지로 가기
@@ -74,9 +74,7 @@ const Scenario = () => {
     console.log('rootId: ', rootId)
     const scenarioAPI = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/v2/stories/${rootId}`,
-        )
+        const response = await axios.get(`/api/v2/stories/${2}`)
         console.log('response: ', response.data.data)
         if (response.status == 200) {
           setScenario(response.data.data)
