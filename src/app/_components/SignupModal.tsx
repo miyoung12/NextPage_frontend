@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import google from '../../../public/google.png'
 import naver from '../../../public/naver.png'
