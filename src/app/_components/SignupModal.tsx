@@ -14,13 +14,13 @@ const SignupModal: React.FC = () => {
           WELCOME
         </div>
         <div className="flex flex-col w-full h-[90vh] justify-center items-center gap-[30px] bg-black border-2 text-white">
-          <Link href="/login">
+          <Link href="http://localhost:8080/oauth2/authorization/google">
             <button className="flex text-4xl w-[30rem] h-[60px] justify-center items-center text-center text-white font-Minecraft border-2 border-white">
               <Image src={google} alt="google" className="mr-10" />
               Login with Google
             </button>
           </Link>
-          <Link href="/login">
+          <Link href="http://localhost:8080/oauth2/authorization/naver">
             <button className="flex text-4xl w-[30rem] h-[60px] justify-center items-center text-center text-white font-Minecraft border-2 border-white">
               <Image src={naver} alt="naver" className="mr-10" />
               Login with Naver
