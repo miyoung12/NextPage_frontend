@@ -1,10 +1,11 @@
+import { Modal } from '@/app/_components/common/Modal'
 import LoginModal from '../../_components/LoginModal'
 
 const LoginPage: React.FC = () => {
   return (
-    <div>
+    <Modal>
       <LoginModal />
-    </div>
+    </Modal>
   )
 }
 export default LoginPage

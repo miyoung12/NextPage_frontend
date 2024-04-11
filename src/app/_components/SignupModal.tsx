@@ -4,12 +4,7 @@ import Image from 'next/image'
 import google from '../../../public/google.png'
 import naver from '../../../public/naver.png'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import axios from 'axios'
-import { useParams } from 'react-router'
 
-import { NextPageContext } from 'next'
 const SignupModal: React.FC = () => {
   return (
     <div
@@ -21,13 +16,13 @@ const SignupModal: React.FC = () => {
           WELCOME
         </div>
         <div className="flex flex-col w-full h-[90vh] justify-center items-center gap-[30px] bg-black border-2 text-white">
-          <a href="http://localhost:8080/oauth2/authorization/google">
+          <Link href="http://localhost:8080/oauth2/authorization/google">
             <button className="flex text-4xl w-[30rem] h-[60px] justify-center items-center text-center text-white font-Minecraft border-2 border-white">
               <Image src={google} alt="google" className="mr-10" />
               Login with Google
             </button>
-          </a>
-          <Link href="/login">
+          </Link>
+          <Link href="http://localhost:8080/oauth2/authorization/naver">
             <button className="flex text-4xl w-[30rem] h-[60px] justify-center items-center text-center text-white font-Minecraft border-2 border-white">
               <Image src={naver} alt="naver" className="mr-10" />
               Login with Naver

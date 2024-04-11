@@ -1,6 +1,5 @@
 'use client'
-import { useState, useRef } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRef, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Onboarding1 from '../app/_components/Onboarding1'
 import Onboarding2 from '../app/_components/Onboarding2'
@@ -9,11 +8,25 @@ import Onboarding4 from '../app/_components/Onboarding4'
 import Image from 'next/image'
 import book from '../../public/book.svg'
 import Background from '../app/_components/Background'
-import Navbar from '../app/_components/Navbar'
 import Link from 'next/link'
+import jwt from 'jsonwebtoken'
+import { useUserStore } from '@/stores/useUserStore'
 
 const LandingPage = () => {
   const topScroll = useRef(null)
+  const { nickname, setNickname } = useUserStore()
+  const [decodedToken, setDecodedToken] = useState<{ name: string } | null>(
+    null,
+  )
+  useEffect(() => {
+    const localStoragetoken = localStorage.getItem('token')
+    const decodedToken = jwt.decode(localStoragetoken ?? '') as {
+      name: string
+    } | null
+    setDecodedToken(decodedToken)
+    console.log(nickname)
+  }, [])
+
   return (
     <div ref={topScroll}>
       <div className="fixed">
@@ -87,7 +100,7 @@ const LandingPage = () => {
         >
           <div className="flex relative w-[1100px] h-[275px] justify-center top-10">
             <Image
-              className="flex w-5/6 absolute text-white "
+              className="absolute flex w-5/6 text-white "
               src={book}
               alt="책 이미지"
             />
@@ -111,9 +124,12 @@ const LandingPage = () => {
                 </button>
 
                 <div className="h-[20px]">
-                  <span className="text-white text-[18px]">
-                    <span className="text-green-400">홍길동</span>님 환영합니다!
-                  </span>
+                  {decodedToken && (
+                    <span className="text-white text-[18px]">
+                      <span className="text-green-400">{nickname}</span>님
+                      환영합니다!
+                    </span>
+                  )}
                 </div>
               </div>
             </motion.div>
