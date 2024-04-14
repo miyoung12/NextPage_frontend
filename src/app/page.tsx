@@ -173,7 +173,9 @@ const LandingPage = () => {
         <Onboarding2 />
         <Onboarding1 />
         <Onboarding3 />
-        <Onboarding4 topScroll={topScroll} />
+        <>
+          <Onboarding4 topScroll={topScroll} />
+        </>
       </div>
     </div>
   )
