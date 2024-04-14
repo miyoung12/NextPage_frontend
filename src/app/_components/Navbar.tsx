@@ -1,21 +1,21 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
-// import { userState } from '../recoil/atoms'
-// import { useNavigate } from 'react-router-dom'
-// import axios from 'axios'
-// import { useRecoilState } from 'recoil'
+import { useRouter } from 'next/navigation'
+import jwt from 'jsonwebtoken'
 
 const Navbar = () => {
-  // Recoil에서 전역 상태를 가져옵니다.
-  // const navigate = useNavigate()
+  const router = useRouter()
+  const [decodedUserToken, setDecodedUserToken] = useState<{
+    name: string
+  } | null>(null)
+  const [decodedNicknameToken, setDecodedNicknameToken] = useState()
   const [nickname, setNickname] = useState('')
   const [onLogOut, setOnLogOut] = useState(false)
   const modalRef = useRef<HTMLDivElement>(null)
-  // const [user, setUser] = useRecoilState(userState)
 
   const handleNavigate = () => {
     // '/landingpage'로 페이지 이동
-    // navigate('/')
+    router.push('/')
   }
 
   const handleLogOutModal = () => {
@@ -24,11 +24,7 @@ const Navbar = () => {
 
   const handleClickLogOut = () => {
     localStorage.clear()
-    // setUser({
-    //   user_id: 0,
-    //   nickname: '',
-    // })
-    // navigate('/')
+    router.push('/')
   }
 
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
@@ -59,6 +55,17 @@ const Navbar = () => {
   }, [])
 
   useEffect(() => {
+    const localStorageUsertoken = localStorage.getItem('token')
+    const localStorageNicknametoken = localStorage.getItem('nickname-storage')
+    const decodedUserToken = jwt.decode(localStorageUsertoken ?? '') as {
+      name: string
+    } | null
+    if (localStorageNicknametoken !== null) {
+      const parsedValue = JSON.parse(localStorageNicknametoken)
+      setNickname(parsedValue.state.nickname)
+    }
+    setDecodedUserToken(decodedUserToken)
+    console.log(decodedUserToken)
     if (onLogOut) {
       // 모달이 열릴 때 외부 클릭 이벤트 리스너 등록
       document.addEventListener('mousedown', handleBackgroundClick)
@@ -84,15 +91,14 @@ const Navbar = () => {
         </span>
       </button>
       <div className="text-white cursor-pointer">
-        {nickname ? (
+        {decodedUserToken ? (
           <div className="relative">
             <span className="text-white">
               <span
                 onClick={handleLogOutModal}
                 className="text-green-400 hover:text-blue-600"
               >
-                홍길동
-                {/* {nickname} */}
+                {nickname}
               </span>
               님 환영합니다!
             </span>
