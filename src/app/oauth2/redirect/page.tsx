@@ -11,9 +11,7 @@ const RedirectPage: React.FC = () => {
     // 토큰이 존재하는지 확인하고 로컬 스토리지에 저장
     if (token) {
       localStorage.setItem('token', token)
-      console.log(token)
       const decodedToken = jwt.decode(token)
-      console.log(decodedToken)
       if (decodedToken?.sub != 'null') {
         // 기존 회원일 경우
         const redirectPage = '/'
