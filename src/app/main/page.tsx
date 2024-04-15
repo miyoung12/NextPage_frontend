@@ -165,7 +165,8 @@ const Main = () => {
               handleUpdate={handleUpdate}
             />
           ) : (
-            <>{handleNavigate()}</>
+            // <>{handleNavigate()}</>
+            <div>a</div>
           )}
         </div>
       </div>
