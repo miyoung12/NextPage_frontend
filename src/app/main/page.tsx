@@ -2,16 +2,22 @@
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback } from 'react'
 import ScenarioSlide from './_component/ScenarioSlide'
 import axios from 'axios'
 import PostScenarioModal from '../scenario/_component/PostScenarioModal'
 import Navbar from '../_components/Navbar'
 import Background from '../_components/Background'
+import jwt from 'jsonwebtoken'
 
 const Main = () => {
+  const router = useRouter()
   const [modalOpen, setModalOpen] = useState(false)
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0)
+  const [decodedUserToken, setDecodedUserToken] = useState<{
+    name: string
+  } | null>(null)
   const [stories, setStories] = useState<
     Array<{
       id: number
@@ -38,7 +44,11 @@ const Main = () => {
   // const handleUpdate = () => {
   //   window.location.reload()
   // }
-
+  const handleNavigate = () => {
+    // '/landingpage'로 페이지 이동
+    console.log('눌림눌림')
+    router.push('/')
+  }
   const handleUpdate = useCallback(() => {
     if (stories !== null) {
       RootStory()
@@ -67,6 +77,13 @@ const Main = () => {
 
   useEffect(() => {
     RootStory()
+    const localStorageUsertoken = localStorage.getItem('token')
+    const decodedUserToken = jwt.decode(localStorageUsertoken ?? '') as {
+      name: string
+    } | null
+    setDecodedUserToken(decodedUserToken)
+    console.log(modalOpen)
+    console.log(decodedUserToken)
   }, [])
 
   return (
@@ -141,16 +158,14 @@ const Main = () => {
               <span>나만의 시나리오를 작성해보세요!</span>
             </div>
           </div>
-          {modalOpen && (
+          {modalOpen && decodedUserToken ? (
             <PostScenarioModal
               isOpen={modalOpen}
-              closeModal={() => {
-                closeModal()
-              }}
-              handleUpdate={() => {
-                handleUpdate()
-              }}
+              closeModal={closeModal}
+              handleUpdate={handleUpdate}
             />
+          ) : (
+            <>{handleNavigate()}</>
           )}
         </div>
       </div>
