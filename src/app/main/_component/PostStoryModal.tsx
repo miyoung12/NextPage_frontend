@@ -1,12 +1,13 @@
 import React, { useRef, useEffect, useState, ChangeEvent } from 'react'
 import axios from 'axios'
 import { motion } from 'framer-motion'
-import Carousel from '@/app/_components/ImgCarousel'
+import Carousel from '../../../app/_components/ImgCarousel'
 import Lottie from 'lottie-react'
-import lottieData from '@/../public/lottie.json'
+import lottieData from '../../../../public/lottie.json'
 
 interface PostStoryModalProps {
-  parentStoryID: number
+  // parentStoryID: number
+  parentStoryID: number | null
   isOpen: boolean
   closeModal: () => void
   isCreateModalOpen: boolean
@@ -96,14 +97,14 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
         alert('문장을 입력하세요!')
       } else {
         setIsGenerating(true) // Lottie 보여주기 시작
-        const response = await axios.post(`/api/v2/stories/images`, {
+        const response = await axios.post(`/api/v2/stories/images`, null, {
           params: {
             content: content,
           },
         })
         if (response.status === 200) {
           console.log('이미지 생성 성공!')
-          const newImageUrl = response.data.image_url.image_url
+          const newImageUrl = response.data.data
           console.log('newImageUrl: ', newImageUrl)
 
           if (newImageUrl !== undefined) {
@@ -139,7 +140,7 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
     try {
       const response = await axios.post(`/api/v2/stories`, {
         params: {
-          parentId,
+          parentStoryID,
         },
         imageUrl: selectedImageUrl,
         content: content,
@@ -175,7 +176,7 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
 
   return (
     <div
-      className={`flex justify-start items-center fixed top-0 pl-[55px] right-[-50%] w-[100vw] h-[100vh]${
+      className={`flex justify-start items-center fixed top-0 pl-[55px] right-[-50%] w-[100vw] h-[100vh] ${
         isOpen ? '' : 'hidden'
       }`}
     >

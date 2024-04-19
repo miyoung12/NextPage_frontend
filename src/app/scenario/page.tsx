@@ -1,7 +1,7 @@
 'use client'
 
-// import ParticleTutorial from "../components/ThreeParticles";
-import TreeGraph from '../scenario/_component/TreeGraph'
+import React from 'react'
+import TreeGraph from './TreeGraph'
 import Navbar from '../_components/Navbar'
 import Background from '../_components/Background'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -9,83 +9,70 @@ import { useEffect, useState } from 'react'
 import ViewStoryModal from '../main/_component/ViewStoryModal'
 import PostStoryModal from '../main/_component/PostStoryModal'
 import axios from 'axios'
-import { useRecoilValue } from 'recoil'
-// import { userState } from "@/recoil/atoms";
-import { root } from 'postcss'
+import { useLocation } from 'react-router-dom'
 
 const Scenario = () => {
   //   const user = useRecoilValue(userState);
   //   const { rootId } = useParams() as { rootId: string }
   //   const story_id = parseInt(rootId, 10)s
-  const { rootId } = useParams() // rootId만 사용
-
+  // const { rootId } = useParams() // rootId만 사용
+  // const { rootId } = useParams<{ rootId: string }>()
+  // console.log(rootId)
   //   const navigate = useNavigate() // 뒤로 가기
 
-  const [isStoryModalOpen, setIsStoryModalOpen] = useState(false)
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false) // 모달 관리
+  // const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+  const rootId = searchParams.get('rootId')
+
+  console.log(rootId)
+
+  // const [isStoryModalOpen, setIsStoryModalOpen] = useState(false)
+  // const [isCreateModalOpen, setIsCreateModalOpen] = useState(false) // 모달 관리
 
   const [scenario, setScenario] = useState([]) // d3 시나리오
-  //   const [clickStoryId, setClickStoryId] = useState<{
-  //     storyId: number
-  //     page: number
-  //   }>({
-  //     storyId: story_id,
-  //     page: 0,
-  //   }) // 클릭한 시나리오 조회
-
-  const [clickStoryId, setClickStoryId] = useState({ rootId: 2, page: 0 })
+  const [clickStoryId, setClickStoryId] = useState<{
+    rootId: number
+    page: number
+  }>({
+    rootId,
+    page: 0,
+  }) //클릭한 시나리오 조회
 
   const handleClickBack = () => {
     // 메인 페이지로 가기
     // navigate('/main')
-  }
-
-  const openModal = (storyId: number, page: number) => {
-    // console.log("click_id: ", storyId);
-    // 클릭한 스토리 아이디로 모달 열기
-    // setClickStoryId({ storyId: storyId, page: page })
-    setIsStoryModalOpen(true)
-  }
-
-  const closeModals = () => {
-    // 둘 다 닫히게
-    setIsStoryModalOpen(false)
-    setIsCreateModalOpen(false)
-  }
-
-  const handleClickStory = (storyId: number, page: number) => {
-    // 스토리 생성 or 조회
-    // if (storyId < 0) {
-    //   if (user.user_id) {
-    // 로그인 상태일 때만 시나리오 생성하게 하기
-    // setIsViewStoryModalOpen(false);
-    setIsCreateModalOpen(true)
-    //   } else {
-    // alert("로그인 후 생성이 가능합니다.");
-    //   }
-    // } else {
-    //   // 조회
-    //   setClickStoryId({ storyId: storyId, page: page })
-    // }
+    window.location.href = '/main'
   }
 
   useEffect(() => {
-    // console.log('storyId: ', story_id)
+    //이 코드가 useEffect 내부에 있어야 렌더링 시 바로 트리 그래프 출력됨
+    const searchParams = new URLSearchParams(location.search)
+    const rootId = searchParams.get('rootId')
     console.log('rootId: ', rootId)
     const scenarioAPI = async () => {
       try {
-        const response = await axios.get(`/api/v2/stories/${2}`)
+        const response = await axios.get(`/api/v2/stories/${rootId}`)
         console.log('response: ', response.data.data)
+        console.log(rootId)
         if (response.status == 200) {
-          setScenario(response.data.data)
+          const stories = response.data.data
+          setScenario(stories)
+          const rootIdNull = stories.find(
+            (story: { parentId: null }) => story.parentId === null,
+          ) // parentId가 null인 요소를 찾습니다.
+          console.log('parentId가 null인 id 값:', rootIdNull.id)
         }
       } catch (error) {
         console.error('Error fetching scenario data:', error)
       }
     }
 
-    scenarioAPI()
-  }, [rootId, isCreateModalOpen])
+    if (rootId) {
+      // rootId가 존재할 때만 API 호출
+      scenarioAPI()
+    }
+    // }, [rootId, isCreateModalOpen])
+  }, [rootId])
 
   return (
     <div className="overflow-hidden">
@@ -93,7 +80,7 @@ const Scenario = () => {
       <div className="flex w-[100vw] h-[100vh] flex-col justify-center items-center absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
         <div className="overflow-hidden flex flex-col w-full h-full">
           <Navbar />
-          <TreeGraph openmodal={openModal} scenario={scenario} />
+          <TreeGraph scenario={scenario} />
         </div>
       </div>
       <div className="flex gap-1 text-gray-400 text-[14px] absolute right-10 bottom-8">
@@ -139,27 +126,6 @@ const Scenario = () => {
           ></path>
         </svg>
       </div>
-      {isStoryModalOpen && (
-        <div className="z-10 w-full h-full">
-          <ViewStoryModal
-            rootId={clickStoryId}
-            isOpen={isStoryModalOpen}
-            onClose={closeModals}
-            handleClickStory={handleClickStory}
-            isCreateModalOpen={isCreateModalOpen}
-          />
-        </div>
-      )}
-      {isCreateModalOpen && (
-        <div className="z-20">
-          <PostStoryModal
-            parentStoryID={clickStoryId.rootId}
-            isOpen={isCreateModalOpen}
-            closeModal={closeModals}
-            isCreateModalOpen={isCreateModalOpen}
-          />
-        </div>
-      )}
     </div>
   )
 }
