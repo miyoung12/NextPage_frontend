@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
@@ -13,8 +14,7 @@ import {
   Navigation,
   Pagination,
 } from 'swiper/modules'
-import test from '../../../../public/test.png'
-import ViewScenarioModal from '@/app/scenario/_component/ViewScenarioModal'
+import ViewScenarioModal from '../../scenario/_component/ViewScenarioModal'
 
 interface ScenarioSlideProps {
   stories: {
@@ -35,7 +35,7 @@ const ScenarioSlide: React.FC<ScenarioSlideProps> = ({
   stories,
   onSlideClick,
 }) => {
-  const [storyId, setStoryId] = useState<number>(0)
+  const [rootId, setRootId] = useState<number>(0)
   const [storyOpen, setStoryOpen] = useState(false)
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
 
@@ -48,16 +48,13 @@ const ScenarioSlide: React.FC<ScenarioSlideProps> = ({
   }
 
   const handleClickRoot = (story: {
-    // id: number
     id: number
-    // user_id: number
-    // user_nickname: string
     userNickname: string
     content: string
     imageUrl: string
   }) => {
     console.log('story: ', story)
-    setStoryId(story.id)
+    setRootId(story.id)
     openStory()
     onSlideClick(stories.findIndex((s) => s.id === story.id))
   }
@@ -166,7 +163,7 @@ const ScenarioSlide: React.FC<ScenarioSlideProps> = ({
           <ViewScenarioModal
             isOpen={storyOpen}
             closeStory={closeStory}
-            storyId={storyId}
+            rootId={rootId}
           />
         )}
       </motion.div>

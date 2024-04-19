@@ -49,6 +49,7 @@ const Carousel: React.FC<CarouselProps> = ({
               height={300} // 이미지의 높이를 설정합니다.
               // layout="responsive" // 반응형 이미지 레이아웃을 설정합니다.
               className={`transition-transform duration-300 transform ${index === currentIndex ? '' : 'hidden'}`}
+              priority={true}
             />
           ) : (
             <p>Image</p>

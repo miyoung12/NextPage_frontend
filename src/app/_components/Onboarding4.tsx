@@ -1,9 +1,10 @@
+import React from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import createModal from '../../../public/createmodal.png'
-import storyModal from '../../../public/storymodal.png'
-import arrow from '../../../public/arrow.svg'
-import grid from '../../../public/grid.png'
+// import createModal from '../../../public/createmodal.png'
+// import storyModal from '../../../public/storymodal.png'
+// import arrow from '../../../public/arrow.svg'
+// import grid from '../../../public/grid.png'
 
 interface Onboaring4Props {
   topScroll: any
@@ -43,8 +44,10 @@ const Onboarding4: React.FC<Onboaring4Props> = ({ topScroll }) => {
               style={{
                 backfaceVisibility: 'hidden', // 뒷면이 보이지 않게
               }}
-              src={createModal}
+              src="/createModal.png"
               alt="생성 모달"
+              width={400}
+              height={400}
             />
             <Image
               className="w-[400px] absolute top-0 left-0"
@@ -52,8 +55,10 @@ const Onboarding4: React.FC<Onboaring4Props> = ({ topScroll }) => {
                 transform: 'rotateY(180deg) translateZ(1px)', // 미리 뒤집어 놓기
                 filter: 'drop-shadow(0 0 12px rgba(255, 255, 255, 0.424))',
               }}
-              src={storyModal}
+              src="/storyModal.png"
               alt="스토리 모달"
+              width={400}
+              height={400}
             />
           </div>
         </motion.div>
@@ -97,8 +102,10 @@ const Onboarding4: React.FC<Onboaring4Props> = ({ topScroll }) => {
                 style={{
                   filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.424))',
                 }}
-                src={arrow}
-                alt=""
+                src="/arrow.png"
+                alt="arrow"
+                width={120}
+                height={120}
               />
               <p className="text-green-400 text-[18px]">시작하러 가기</p>
             </motion.div>
@@ -107,8 +114,10 @@ const Onboarding4: React.FC<Onboaring4Props> = ({ topScroll }) => {
       </div>
       <Image
         className="absolute bottom-0 w-[2000px] h-[250px] object-cover object-top"
-        src={grid}
+        src="/grid.png"
         alt="그리드"
+        width={2000}
+        height={250}
       />
     </div>
   )
