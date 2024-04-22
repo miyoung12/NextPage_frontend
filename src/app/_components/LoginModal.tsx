@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import Background from './Background'
 import jwt from 'jsonwebtoken'
 import { useUserStore } from '@/stores/useUserStore'
-// import { useRouter } from 'next/router'
 import { useRouter } from 'next/navigation'
 
 const LoginModal: React.FC = () => {
@@ -12,20 +11,16 @@ const LoginModal: React.FC = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value)
   }
-  // const test = () => {
-  //   // router.replace('/')
-  //   router.back()
-  // }
+  const searchParams = new URLSearchParams(window.location.search)
+  const email = searchParams.get('e')
+  console.log(email)
   const handleSubmit = () => {
-    const localStoragetoken = localStorage.getItem('token') as string // 문자열로 캐스팅
-    const decodedToken = jwt.decode(localStoragetoken) as {
-      email: string
-    } | null // 타입 명시
-    const email = decodedToken?.email
+    if (email !== null) {
+      localStorage.setItem('e', email)
+    }
     setNickname(nickname)
-    console.log('닉네임은?', nickname)
     console.log(email)
-    // router.back()
+    console.log(nickname)
     router.replace('/')
 
     // POST 요청 보내기

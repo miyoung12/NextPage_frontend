@@ -10,16 +10,25 @@ import book from '../../public/book.svg'
 import Background from '../app/_components/Background'
 import Link from 'next/link'
 import jwt from 'jsonwebtoken'
+import { useRouter } from 'next/navigation'
 import { useUserStore } from '@/stores/useUserStore'
 
 const LandingPage = () => {
+  const router = useRouter()
   const topScroll = useRef(null)
   const { nickname, setNickname } = useUserStore()
   const [decodedToken, setDecodedToken] = useState<{ name: string } | null>(
     null,
   )
+  const startButton = () => {
+    if (decodedToken) {
+      router.push('/main')
+    } else {
+      router.push('/signup')
+    }
+  }
   useEffect(() => {
-    const localStoragetoken = localStorage.getItem('token')
+    const localStoragetoken = localStorage.getItem('a')
     const decodedToken = jwt.decode(localStoragetoken ?? '') as {
       name: string
     } | null
@@ -116,11 +125,12 @@ const LandingPage = () => {
             >
               <div className="flex flex-col items-center gap-[10px]">
                 <button className="flex z-10 font-medium text-black w-[145px] h-[53px] mt-[30px] text-4xl bg-green-400 rounded-2xl justify-center items-center hover:bg-blue-500 hover:text-green-400">
-                  <Link href="/signup">
-                    <span className="leading-none mt-[6px] ml-[4px]">
-                      START
-                    </span>
-                  </Link>
+                  <span
+                    onClick={startButton}
+                    className="leading-none mt-[6px] ml-[4px]"
+                  >
+                    START
+                  </span>
                 </button>
 
                 <div className="h-[20px]">
@@ -164,7 +174,9 @@ const LandingPage = () => {
         <Onboarding2 />
         <Onboarding1 />
         <Onboarding3 />
-        <Onboarding4 topScroll={topScroll} />
+        <>
+          <Onboarding4 topScroll={topScroll} />
+        </>
       </div>
     </div>
   )
