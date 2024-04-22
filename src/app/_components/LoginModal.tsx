@@ -1,7 +1,4 @@
 'use client'
-import React, { useState } from 'react'
-import Background from './Background'
-import jwt from 'jsonwebtoken'
 import { useUserStore } from '@/stores/useUserStore'
 import { useRouter } from 'next/navigation'
 
