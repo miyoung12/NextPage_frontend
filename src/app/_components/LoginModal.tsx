@@ -8,38 +8,39 @@ const LoginModal: React.FC = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value)
   }
-  const searchParams = new URLSearchParams(window.location.search)
-  const email = searchParams.get('e')
-  console.log(email)
   const handleSubmit = () => {
-    if (email !== null) {
-      localStorage.setItem('e', email)
-    }
-    setNickname(nickname)
-    console.log(email)
-    console.log(nickname)
-    router.replace('/')
+    if (typeof window !== 'undefined') {
+      const searchParams = new URLSearchParams(window.location.search)
+      const email = searchParams.get('e')
+      if (email !== null) {
+        localStorage.setItem('e', email)
+      }
+      setNickname(nickname)
+      console.log(email)
+      console.log(nickname)
+      router.replace('/')
 
-    // POST 요청 보내기
-    fetch('http://localhost:8080/api/v2/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ nickname, email }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
-        return response.json()
+      // POST 요청 보내기
+      fetch('http://localhost:8080/api/v2/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ nickname, email }),
       })
-      .then((data) => {
-        console.log(data) // POST 요청에 대한 응답 처리
-      })
-      .catch((error) => {
-        console.error('Error:', error) // 에러 처리
-      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok')
+          }
+          return response.json()
+        })
+        .then((data) => {
+          console.log(data) // POST 요청에 대한 응답 처리
+        })
+        .catch((error) => {
+          console.error('Error:', error) // 에러 처리
+        })
+    }
   }
 
   return (
