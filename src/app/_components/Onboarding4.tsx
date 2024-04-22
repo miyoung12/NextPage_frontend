@@ -102,7 +102,7 @@ const Onboarding4: React.FC<Onboaring4Props> = ({ topScroll }) => {
                 style={{
                   filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.424))',
                 }}
-                src="/arrow.png"
+                src="/arrow.svg"
                 alt="arrow"
                 width={120}
                 height={120}
