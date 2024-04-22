@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import React from 'react'
 
 const Onboarding1 = () => {
   const bgstyle = {

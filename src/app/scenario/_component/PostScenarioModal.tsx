@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState, ChangeEvent } from 'react'
 import axios from 'axios'
 import { motion } from 'framer-motion'
-import Carousel from '@/app/_components/ImgCarousel'
+import Carousel from '../../_components/ImgCarousel'
 import Lottie from 'lottie-react'
-import lottieData from '@/../public/lottie.json'
+import lottieData from '../../../../public/lottie.json'
 
 interface PostScenarioModalProps {
   isOpen: boolean

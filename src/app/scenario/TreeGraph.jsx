@@ -1,59 +1,37 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
+import ViewStoryModal from '../main/_component/ViewStoryModal'
+import PostStoryModal from '../main/_component/PostStoryModal'
 
-const TreeGraph = ({ openmodal, scenario }) => {
+const TreeGraph = ({ scenario }) => {
   const svgRef = useRef(null)
+  const [clickStoryId, setClickStoryId] = useState(null)
+  const [isStoryModalOpen, setIsStoryModalOpen] = useState(false)
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false) // 모달 관리
 
-  const handleClickStory = (d) => {
-    console.log('d: ', d)
-    // console.log("d.depth: ", d.depth);
-    const story_id = d.data.story_id
-    const page = d.depth + 1
-    openmodal(story_id, page)
-  }
-
-  function transformData(treeData, startNodeId) {
-    const result = [] // 결과를 담을 배열
-    const startNode = treeData.find(
-      (node) => node.story.story_id === startNodeId,
-    ) // 시작 노드 찾기
-
-    function findChildren(node) {
-      // 재귀적으로 자식 노드 찾기
-      const transformedNode = {
-        // 자식 노드 정보를 담을 객체
-        story_id: node.story.story_id,
-        user_nickname: node.story.user_nickname,
-        content: node.story.content,
-        image_url: node.story.image_url,
-        child_content: node.story.child_content,
-        children: null, // 기본값으로 null 설정
-      }
-
-      // 자식 노드가 있는 경우 재귀적으로 호출하여 children 배열에 추가
-      if (node.story.child_id && node.story.child_id.length > 0) {
-        transformedNode.children = node.story.child_id.map((childId) => {
-          const childNode = treeData.find(
-            (child) => child.story.story_id === childId,
-          )
-          return findChildren(childNode)
-        })
-      }
-      return transformedNode
+  const handleClickStory = (id, page) => {
+    // console.log('d: ', d)
+    // const id = d.data.name
+    // const page = d.depth + 1
+    if (id >= 0) {
+      setClickStoryId({ id, page })
+      // console.log(id)
+      // console.log(page)
+      setIsStoryModalOpen(true)
+    } else {
+      setIsCreateModalOpen(true)
     }
-
-    const transformedStartNode = findChildren(startNode) // 시작 노드부터 재귀적으로 데이터 변환 시작
-    result.push(transformedStartNode)
-    return result
   }
 
+  const closeModals = () => {
+    // 둘 다 닫히게
+    setIsStoryModalOpen(false)
+    setIsCreateModalOpen(false)
+  }
   useEffect(() => {
     if (scenario && scenario.length > 0) {
       // Remove any existing SVG
       d3.select(svgRef.current).selectAll('*').remove()
-
-      // d3.hierarchy()를 사용하기 위해 데이터 구조 변경
-      const treeData = transformData(scenario, scenario[0].story.story_id) // 가장 첫번째 데이터를 시작점으로 하는 트리 생성
 
       // 너비와 높이 설정
       const width = document.body.clientWidth
@@ -70,7 +48,27 @@ const TreeGraph = ({ openmodal, scenario }) => {
         .size([innerHeight, innerWidth])
         .nodeSize([200, 390]) //각각 노드의 수평 및 수직 크기
 
-      const root = d3.hierarchy(treeData[0]) // 트리구조
+      const stratifyData = scenario.map((node) => ({
+        name: node.id,
+        parent: node.parentId ? node.parentId.toString() : null,
+        image: node.imageUrl,
+      }))
+      stratifyData.forEach((node) => {
+        node.data = { image: node.image } // Add image to data property
+      })
+
+      const stratify = d3
+        .stratify()
+        .id((d) => d.name)
+        .parentId((d) => d.parent)
+      // .imageUrl((d) => d.image)
+
+      const root = stratify(stratifyData)
+      console.log(root)
+      console.log(root.children)
+      console.log(root.data.image)
+      // console.log((root.children.id = .image))
+
       const links = tree(root).links()
       const lineGenerator = d3
         .line()
@@ -214,12 +212,14 @@ const TreeGraph = ({ openmodal, scenario }) => {
           .style('fill', 'none')
           .transition()
           .duration(400)
-          .attr('xlink:href', (d) => d.data.image_url)
+          .attr('xlink:href', (d) => d.data.image)
           .attr('width', 150)
           .attr('height', 150)
           .delay((d) => 250 + 300 * d.depth)
 
-        g.selectAll('image').on('click', (event, d) => handleClickStory(d)) // 클릭 이벤트 핸들러 추가
+        g.selectAll('image').on('click', (event, d) =>
+          handleClickStory(d.data.name, d.depth + 1),
+        ) // 클릭 이벤트 핸들러 추가
       }
     }
   }, [scenario])
@@ -227,6 +227,27 @@ const TreeGraph = ({ openmodal, scenario }) => {
   return (
     <div className="w-full h-full">
       <svg ref={svgRef} className="w-full h-full"></svg>
+      {isStoryModalOpen && ( // 클릭한 스토리의 ID가 있을 때만 모달을 열도록 설정
+        <div className="z-10 w-full h-full">
+          <ViewStoryModal
+            storyID={clickStoryId}
+            isOpen={isStoryModalOpen}
+            handleClickStory={handleClickStory}
+            onClose={closeModals}
+            isCreateModalOpen={isCreateModalOpen}
+          />
+        </div>
+      )}
+      {isCreateModalOpen && (
+        <div className="z-20">
+          <PostStoryModal
+            parentStoryID={clickStoryId.id}
+            isOpen={isCreateModalOpen}
+            closeModal={closeModals}
+            isCreateModalOpen={isCreateModalOpen}
+          />
+        </div>
+      )}
     </div>
   )
 }

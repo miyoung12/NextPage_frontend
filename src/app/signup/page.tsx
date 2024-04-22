@@ -1,5 +1,6 @@
-import Background from '@/app/_components/Background'
+import Background from '../_components/Background'
 import SignupModal from '../_components/SignupModal'
+import React from 'react'
 export default function page() {
   return (
     <div>

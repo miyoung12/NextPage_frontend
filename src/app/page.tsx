@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 import { useRef, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Onboarding1 from '../app/_components/Onboarding1'
@@ -6,7 +7,7 @@ import Onboarding2 from '../app/_components/Onboarding2'
 import Onboarding3 from '../app/_components/Onboarding3'
 import Onboarding4 from '../app/_components/Onboarding4'
 import Image from 'next/image'
-import book from '../../public/book.svg'
+// import book from '../../public/book.svg'
 import Background from '../app/_components/Background'
 import jwt from 'jsonwebtoken'
 import { useRouter } from 'next/navigation'
@@ -109,8 +110,10 @@ const LandingPage = () => {
           <div className="flex relative w-[1100px] h-[275px] justify-center top-10">
             <Image
               className="absolute flex w-5/6 text-white "
-              src={book}
+              src="/book.svg"
               alt="책 이미지"
+              width={1100}
+              height={275}
             />
             <motion.div
               initial={{ opacity: 0 }}
