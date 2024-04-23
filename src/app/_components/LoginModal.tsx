@@ -1,9 +1,5 @@
 'use client'
-import React, { useState } from 'react'
-import Background from './Background'
-import jwt from 'jsonwebtoken'
-import { useUserStore } from '../../stores/useUserStore'
-// import { useRouter } from 'next/router'
+import { useUserStore } from '@/stores/useUserStore'
 import { useRouter } from 'next/navigation'
 
 const LoginModal: React.FC = () => {
@@ -12,42 +8,39 @@ const LoginModal: React.FC = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value)
   }
-  // const test = () => {
-  //   // router.replace('/')
-  //   router.back()
-  // }
   const handleSubmit = () => {
-    const localStoragetoken = localStorage.getItem('token') as string // 문자열로 캐스팅
-    const decodedToken = jwt.decode(localStoragetoken) as {
-      email: string
-    } | null // 타입 명시
-    const email = decodedToken?.email
-    setNickname(nickname)
-    console.log('닉네임은?', nickname)
-    console.log(email)
-    // router.back()
-    router.replace('/')
+    if (typeof window !== 'undefined') {
+      const searchParams = new URLSearchParams(window.location.search)
+      const email = searchParams.get('e')
+      if (email !== null) {
+        localStorage.setItem('e', email)
+      }
+      setNickname(nickname)
+      console.log(email)
+      console.log(nickname)
+      router.replace('/')
 
-    // POST 요청 보내기
-    fetch('http://localhost:8080/api/v2/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ nickname, email }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
-        return response.json()
+      // POST 요청 보내기
+      fetch('http://localhost:8080/api/v2/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ nickname, email }),
       })
-      .then((data) => {
-        console.log(data) // POST 요청에 대한 응답 처리
-      })
-      .catch((error) => {
-        console.error('Error:', error) // 에러 처리
-      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok')
+          }
+          return response.json()
+        })
+        .then((data) => {
+          console.log(data) // POST 요청에 대한 응답 처리
+        })
+        .catch((error) => {
+          console.error('Error:', error) // 에러 처리
+        })
+    }
   }
 
   return (

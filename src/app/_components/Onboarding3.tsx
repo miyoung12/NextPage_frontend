@@ -52,7 +52,7 @@ const Onboarding3 = () => {
             style={{
               filter: 'drop-shadow(0 0 14px rgba(255, 255, 255, 0.424))',
             }}
-            src="/d3.png"
+            src="/d3.svg"
             alt="d3"
             width={1000}
             height={1000}
