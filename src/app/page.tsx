@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 import { useRef, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Onboarding1 from '../app/_components/Onboarding1'
@@ -6,11 +7,11 @@ import Onboarding2 from '../app/_components/Onboarding2'
 import Onboarding3 from '../app/_components/Onboarding3'
 import Onboarding4 from '../app/_components/Onboarding4'
 import Image from 'next/image'
-import book from '../../public/book.svg'
+// import book from '../../public/book.svg'
 import Background from '../app/_components/Background'
 import jwt from 'jsonwebtoken'
-import { useUserStore } from '@/stores/useUserStore'
 import { useRouter } from 'next/navigation'
+import { useUserStore } from '@/stores/useUserStore'
 
 const LandingPage = () => {
   const router = useRouter()
@@ -19,15 +20,15 @@ const LandingPage = () => {
   const [decodedToken, setDecodedToken] = useState<{ name: string } | null>(
     null,
   )
-  const handleClick = () => {
-    if (decodedToken != null) {
+  const startButton = () => {
+    if (decodedToken) {
       router.push('/main')
     } else {
       router.push('/signup')
     }
   }
   useEffect(() => {
-    const localStoragetoken = localStorage.getItem('token')
+    const localStoragetoken = localStorage.getItem('a')
     const decodedToken = jwt.decode(localStoragetoken ?? '') as {
       name: string
     } | null
@@ -109,8 +110,10 @@ const LandingPage = () => {
           <div className="flex relative w-[1100px] h-[275px] justify-center top-10">
             <Image
               className="absolute flex w-5/6 text-white "
-              src={book}
+              src="/book.svg"
               alt="책 이미지"
+              width={1100}
+              height={275}
             />
             <motion.div
               initial={{ opacity: 0 }}
@@ -125,13 +128,12 @@ const LandingPage = () => {
               <div className="flex flex-col items-center gap-[10px]">
                 <button className="flex z-10 font-medium text-black w-[145px] h-[53px] mt-[30px] text-4xl bg-green-400 rounded-2xl justify-center items-center hover:bg-blue-500 hover:text-green-400">
                   <span
-                    onClick={handleClick}
+                    onClick={startButton}
                     className="leading-none mt-[6px] ml-[4px]"
                   >
                     START
                   </span>
                 </button>
-
                 <div className="h-[20px]">
                   {decodedToken && (
                     <span className="text-white text-[18px]">

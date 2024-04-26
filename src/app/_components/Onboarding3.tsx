@@ -1,4 +1,5 @@
-import d3 from '../../../public/d3.svg'
+import React from 'react'
+// import d3 from '../../../public/d3.svg'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 
@@ -51,8 +52,10 @@ const Onboarding3 = () => {
             style={{
               filter: 'drop-shadow(0 0 14px rgba(255, 255, 255, 0.424))',
             }}
-            src={d3}
+            src="/d3.svg"
             alt="d3"
+            width={1000}
+            height={1000}
           />
         </motion.div>
       </div>

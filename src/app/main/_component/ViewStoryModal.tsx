@@ -2,20 +2,20 @@ import React from 'react'
 import axios from 'axios'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 interface StoryModalProps {
-  rootId: {
-    rootId: number
+  storyID: {
+    id: number
     page: number
   }
   isOpen: boolean
   onClose: () => void
-  handleClickStory: (rootId: number, page: number) => void
+  handleClickStory: any
   isCreateModalOpen: boolean
 }
-
 const StoryModal: React.FC<StoryModalProps> = ({
-  rootId,
+  storyID,
   isOpen,
   onClose,
   handleClickStory,
@@ -32,9 +32,10 @@ const StoryModal: React.FC<StoryModalProps> = ({
   } | null>(null)
   const modalRefs = [
     useRef<HTMLDivElement>(null),
-    // useRef<HTMLDivElement>(null),
-    // useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
   ]
+  // const [storyId, setStoryId] = useState<number>()
   const [isAnimationComplete1, setIsAnimationComplete1] = useState(false)
   const [isAnimationComplete2, setIsAnimationComplete2] = useState(false)
   const [nextModalKey, setNextModalKey] = useState(0)
@@ -68,11 +69,11 @@ const StoryModal: React.FC<StoryModalProps> = ({
   }, [isOpen, isCreateModalOpen])
 
   useEffect(() => {
-    console.log('**story_id: ', rootId)
+    const storyId = storyID.id
     const storyAPI = async () => {
       try {
-        const response = await axios.get(`/api/v2/stories/details/${story?.id}`)
-        console.log('response: ', response.data.data)
+        const response = await axios.get(`/api/v2/stories/details/${storyId}`)
+        // console.log('response: ', response.data.data)
         if (response.data.data) {
           // 데이터가 존재할 때만 state 업데이트
           setStory({
@@ -90,8 +91,9 @@ const StoryModal: React.FC<StoryModalProps> = ({
       }
     }
 
+    // console.log(rootId)
     storyAPI()
-  }, [rootId, nextModalKey])
+  }, [storyID, nextModalKey])
 
   return (
     <div
@@ -134,20 +136,22 @@ const StoryModal: React.FC<StoryModalProps> = ({
         >
           <div className="relative flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 text-[33px] font-Minecraft">
             <span>
-              PAGE <span className="text-white">{rootId.page}</span>{' '}
+              PAGE <span className="text-white">{storyID.page}</span>{' '}
             </span>
             <div className="text-gray-400 text-[14px] absolute bottom-[8px] right-[32px]">
               @ {story?.userNickname ? `${story.userNickname}` : 'LOADING...'}
             </div>
           </div>
           <div className="flex flex-col w-full h-[615px] justify-center items-center gap-[16px] bg-[#000000ae] text-white border-2 border-gray-400 ">
-            <img
+            <Image
               className="block w-[350px] bg-gray-500"
               style={{
                 filter: 'drop-shadow(0px 0px 6px rgba(255, 255, 255, 0.615))',
               }}
               src={story?.imageUrl ? `${story.imageUrl}` : ''}
               alt="Image"
+              width={350}
+              height={350}
             />
             <div className="flex flex-col items-center w-[330px] gap-[10px]">
               <div className="w-[350px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 bg-black">
@@ -175,7 +179,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
                     story?.childId && story.childId[0]
                       ? Number(story.childId[0])
                       : -1,
-                    rootId.page + 1,
+                    storyID.page + 1,
                   )
                   setNextModalKey((prevKey) => prevKey + 1)
                 }
@@ -195,7 +199,13 @@ const StoryModal: React.FC<StoryModalProps> = ({
                 setIsAnimationComplete1(true)
               }}
             >
-              <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
+              <Image
+                className="w-[60px] h-[60px]"
+                src="/hand.svg"
+                alt="hand"
+                width={60}
+                height={60}
+              />
               <div
                 ref={modalRefs[1]}
                 className="flex flex-col w-[370px] h-[235px] z-1"
@@ -225,7 +235,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
                   story?.childId && story.childId[1]
                     ? Number(story.childId[1])
                     : -1,
-                  rootId.page + 1,
+                  storyID.page + 1,
                 )
                 setNextModalKey((prevKey) => prevKey + 1)
               }
@@ -245,7 +255,13 @@ const StoryModal: React.FC<StoryModalProps> = ({
               setIsAnimationComplete2(true)
             }}
           >
-            <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
+            <Image
+              className="w-[60px] h-[60px]"
+              src="/hand.svg"
+              alt="hand"
+              width={60}
+              height={60}
+            />
             <div
               ref={modalRefs[2]}
               className="flex flex-col w-[370px] h-[235px] z-1"

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { NextPage } from 'next'
+import React from 'react'
 
 const NotFound: NextPage = () => {
   return (

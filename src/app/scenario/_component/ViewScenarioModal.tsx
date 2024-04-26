@@ -7,13 +7,13 @@ import { useRouter } from 'next/navigation'
 interface ViewScenarioModalProps {
   isOpen: boolean
   closeStory: () => void
-  storyId: number
+  rootId: number
 }
 
 const ViewScenarioModal: React.FC<ViewScenarioModalProps> = ({
   isOpen,
   closeStory,
-  storyId,
+  rootId,
 }) => {
   //   const navigate = useNavigate()
   const [story, setStory] = useState<{
@@ -47,18 +47,10 @@ const ViewScenarioModal: React.FC<ViewScenarioModalProps> = ({
   useEffect(() => {
     const ShowRootScenario = async () => {
       try {
-        const response = await axios.get(`/api/v2/stories/details/${storyId}`)
+        const response = await axios.get(`/api/v2/stories/details/${rootId}`)
         if (response.status === 200) {
           console.log('단일 시나리오 조회')
-          setStory({
-            id: response.data.data.id,
-            content: response.data.data.content,
-            imageUrl: response.data.data.imageUrl,
-            userNickname: response.data.data.userNickname,
-            parentId: response.data.data.parentId,
-            childId: response.data.data.childId,
-            childContent: response.data.data.childContent,
-          })
+          setStory(response.data.data)
         }
       } catch (error) {
         console.error(error)
@@ -66,16 +58,15 @@ const ViewScenarioModal: React.FC<ViewScenarioModalProps> = ({
     }
 
     if (isOpen) {
-      // isOpen이 true이고 storyId가 존재할 때에만 API 호출
+      // isOpen이 true이고 rootId가 존재할 때에만 API 호출
       ShowRootScenario()
     }
   }, [])
 
   const router = useRouter()
-
   const handleOkButtonClick = () => {
-    const rootId = storyId
-    router.push(`/scenario/${rootId}`)
+    router.push(`/scenario/?rootId=${rootId}`)
+    console.log(rootId)
   }
 
   useEffect(() => {
