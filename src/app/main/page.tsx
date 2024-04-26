@@ -34,12 +34,11 @@ const Main = () => {
     setStories(stories)
   }
   const openModal = () => {
-    //     if (user.user_id) {
-    //       // 로그인 상태일 때만 시나리오 생성하게 하기
-    setModalOpen(true)
-    //     } else {
-    //       alert('로그인 후 생성이 가능합니다.')
-    //     }
+    if (decodedUserToken) {
+      setModalOpen(true)
+    } else {
+      alert('로그인 후 생성이 가능합니다.')
+    }
   }
 
   // const handleUpdate = () => {
@@ -78,7 +77,7 @@ const Main = () => {
 
   useEffect(() => {
     RootStory()
-    const localStorageUsertoken = localStorage.getItem('token')
+    const localStorageUsertoken = localStorage.getItem('a')
     const decodedUserToken = jwt.decode(localStorageUsertoken ?? '') as {
       name: string
     } | null

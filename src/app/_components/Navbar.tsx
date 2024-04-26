@@ -55,7 +55,7 @@ const Navbar = () => {
   }, [])
 
   useEffect(() => {
-    const localStorageUsertoken = localStorage.getItem('token')
+    const localStorageUsertoken = localStorage.getItem('a')
     const localStorageNicknametoken = localStorage.getItem('nickname-storage')
     const decodedUserToken = jwt.decode(localStorageUsertoken ?? '') as {
       name: string
