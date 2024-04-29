@@ -8,13 +8,11 @@ const RedirectPage: React.FC = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const token = urlParams.get('a')
-
     // 토큰이 존재하는지 확인하고 로컬 스토리지에 저장
     if (token) {
       localStorage.setItem('a', token)
       console.log(token)
       const decodedToken = jwt.decode(token)
-      console.log(decodedToken)
       if (decodedToken?.sub != 'null') {
         // 기존 회원일 경우
         fetch('http://localhost:8080/api/v2/users/details', {

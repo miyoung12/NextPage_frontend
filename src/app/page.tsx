@@ -134,7 +134,6 @@ const LandingPage = () => {
                     START
                   </span>
                 </button>
-
                 <div className="h-[20px]">
                   {decodedToken && (
                     <span className="text-white text-[18px]">
