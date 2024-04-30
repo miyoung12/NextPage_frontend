@@ -1,16 +1,12 @@
 'use client'
-
-import React from 'react'
-import Image from 'next/image'
-import { motion } from 'framer-motion'
 import { useState, useEffect, useCallback } from 'react'
-import ScenarioSlide from './_component/ScenarioSlide'
 import axios from 'axios'
-import PostScenarioModal from '../scenario/_component/PostScenarioModal'
-import Navbar from '../_components/Navbar'
-import Background from '../_components/Background'
+import { motion } from 'framer-motion'
+import Background from '@/app/_components/Background'
+import Navbar from '@/app/_components/Navbar'
+import ScenarioSlide from './_component/ScenarioSlide'
 
-const Main = () => {
+const Chapter = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0)
   const [stories, setStories] = useState<
@@ -69,14 +65,23 @@ const Main = () => {
   useEffect(() => {
     RootStory()
   }, [])
-
   return (
     <div>
       <Background />
-      <div className="flex w-[100vw] h-[100vh] flex-col justify-center items-center absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
-        <div className="flex flex-col w-full h-full gap-[33px]">
+      <div className="flex flex-col w-[100vw] h-[100vh] justify-center items-center absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
+        <div className="flex flex-col w-full h-full items-center gap-[33px]">
           <Navbar />
-          <div className="flex flex-col items-center h-[145px]">
+          <div className="flex justify-center items-center w-full h-full absolute">
+            <img
+              style={{
+                filter: 'drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.807))',
+              }}
+              className="w-[60%] "
+              src="./circle.svg"
+              alt=""
+            />
+          </div>
+          {/* <div className="flex flex-col items-center h-[145px]">
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -100,7 +105,7 @@ const Main = () => {
               </div>
               <hr className="border-white w-[600px]" />
             </motion.div>
-          </div>
+          </div> */}
           <div className="z-1 flex justify-center">
             <ScenarioSlide
               stories={stories}
@@ -108,54 +113,10 @@ const Main = () => {
               onSlideClick={handleSwiper}
             />
           </div>
-          <div className="absolute bottom-12 right-14 z-10">
-            <Image
-              className="hover:scale-125 hover:opacity-35 drop-shadow"
-              style={{
-                filter: 'drop-shadow(7px 1px 8px rgba(255, 255, 255, 0.7))',
-                position: 'relative',
-              }}
-              onClick={openModal}
-              src="/write.svg"
-              alt="글버튼"
-              width={50}
-              height={50}
-              priority={true}
-            />
-            <div className="w-max flex gap-1 text-gray-400 text-[14px] absolute right-[60px] bottom-0 z-1">
-              <svg
-                className="w-[15px]"
-                data-slot="icon"
-                fill="none"
-                strokeWidth={2.5}
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
-                />
-              </svg>
-              <span>나만의 시나리오를 작성해보세요!</span>
-            </div>
-          </div>
-          {modalOpen && (
-            <PostScenarioModal
-              isOpen={modalOpen}
-              closeModal={() => {
-                closeModal()
-              }}
-              handleUpdate={() => {
-                handleUpdate()
-              }}
-            />
-          )}
         </div>
       </div>
     </div>
   )
 }
-export default Main
+
+export default Chapter
