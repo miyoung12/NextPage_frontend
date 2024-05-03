@@ -4,19 +4,10 @@ import Background from '../_components/Background'
 import Navbar from '../_components/Navbar'
 import Image from 'next/image'
 import Star from '../../../public/star.png'
+import { useUserStore } from '@/stores/useUserStore'
 
 export default function Mypage() {
-  const [nickname, setNickname] = useState('')
-  useEffect(() => {
-    const localStorageUsertoken = localStorage.getItem('nickname-storage')
-    if (localStorageUsertoken !== null) {
-      const storedData = JSON.parse(localStorageUsertoken)
-      const nickname = storedData.state.nickname.match(/^[^#]*/)[0]
-      setNickname(nickname)
-    } else {
-      console.log('No nickname')
-    }
-  }, [])
+  const { nickname } = useUserStore()
   return (
     <div>
       <div className="fixed">

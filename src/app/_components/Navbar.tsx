@@ -2,14 +2,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import jwt from 'jsonwebtoken'
+import { useUserStore } from '@/stores/useUserStore'
 
 const Navbar = () => {
   const router = useRouter()
   const [decodedUserToken, setDecodedUserToken] = useState<{
     name: string
   } | null>(null)
-  const [decodedNicknameToken, setDecodedNicknameToken] = useState()
-  const [nickname, setNickname] = useState('')
+  const { nickname } = useUserStore()
   const [onLogOut, setOnLogOut] = useState(false)
   const modalRef = useRef<HTMLDivElement>(null)
 
@@ -56,17 +56,10 @@ const Navbar = () => {
 
   useEffect(() => {
     const localStorageUsertoken = localStorage.getItem('a')
-    const localStorageNicknametoken = localStorage.getItem('nickname-storage')
     const decodedUserToken = jwt.decode(localStorageUsertoken ?? '') as {
       name: string
     } | null
-    if (localStorageNicknametoken !== null) {
-      const storedData = JSON.parse(localStorageNicknametoken)
-      const nickname = storedData.state.nickname.match(/^[^#]*/)[0]
-      setNickname(nickname)
-    }
     setDecodedUserToken(decodedUserToken)
-    console.log(decodedUserToken)
     if (onLogOut) {
       // 모달이 열릴 때 외부 클릭 이벤트 리스너 등록
       document.addEventListener('mousedown', handleBackgroundClick)
