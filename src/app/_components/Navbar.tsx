@@ -61,8 +61,9 @@ const Navbar = () => {
       name: string
     } | null
     if (localStorageNicknametoken !== null) {
-      const parsedValue = JSON.parse(localStorageNicknametoken)
-      setNickname(parsedValue.state.nickname)
+      const storedData = JSON.parse(localStorageNicknametoken)
+      const nickname = storedData.state.nickname.match(/^[^#]*/)[0]
+      setNickname(nickname)
     }
     setDecodedUserToken(decodedUserToken)
     console.log(decodedUserToken)
