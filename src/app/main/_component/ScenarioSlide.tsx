@@ -14,7 +14,7 @@ import {
   Navigation,
   Pagination,
 } from 'swiper/modules'
-import ViewScenarioModal from '../../scenario/_component/ViewScenarioModal'
+import ViewScenarioModal from '../../main/_component/ViewScenarioModal'
 
 interface ScenarioSlideProps {
   stories: {

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 interface StoryModalProps {
   storyID: {
@@ -95,6 +96,12 @@ const StoryModal: React.FC<StoryModalProps> = ({
     storyAPI()
   }, [storyID, nextModalKey])
 
+  const router = useRouter()
+  const handleClickChapter = () => {
+    const StoryId = storyID.id
+    router.push(`/chapter/?storyId=${StoryId}`)
+    console.log(StoryId)
+  }
   return (
     <div
       className={`flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-black bg-opacity-50 ${
@@ -158,12 +165,20 @@ const StoryModal: React.FC<StoryModalProps> = ({
                 {story?.content ? `${story.content}` : 'LOADING...'}
               </div>
             </div>
-            <button
-              onClick={onClose}
-              className="flex w-[60px] h-[30px] justify-center items-center bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
-            >
-              <p className="pt-[4px]">OK</p>
-            </button>
+            <div className="flex justify-between gap-[20px] w-[330px]">
+              <button
+                onClick={onClose}
+                className="flex w-[60px] h-[30px] justify-center items-center bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
+              >
+                <p className="pt-[4px]">OK</p>
+              </button>
+              <button
+                onClick={handleClickChapter}
+                className="flex w-[120px] h-[30px] justify-center items-center bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
+              >
+                <p className="pt-[4px]">CHAPTER</p>
+              </button>
+            </div>
           </div>
         </motion.div>
         <div className="flex flex-col justify-center gap-[80px] z-1">

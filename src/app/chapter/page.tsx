@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import Background from '@/app/_components/Background'
 import Navbar from '@/app/_components/Navbar'
 import ScenarioSlide from './_component/ScenarioSlide'
+import CarouselContainer from './_component/3dCarousel'
 
 const Chapter = () => {
   const [modalOpen, setModalOpen] = useState(false)
@@ -71,7 +72,7 @@ const Chapter = () => {
       <div className="flex flex-col w-[100vw] h-[100vh] justify-center items-center absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
         <div className="flex flex-col w-full h-full items-center gap-[33px]">
           <Navbar />
-          <div className="flex justify-center items-center w-full h-full absolute">
+          {/* <div className="flex justify-center items-center w-full h-full absolute">
             <img
               style={{
                 filter: 'drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.807))',
@@ -80,7 +81,7 @@ const Chapter = () => {
               src="./circle.svg"
               alt=""
             />
-          </div>
+          </div> */}
           {/* <div className="flex flex-col items-center h-[145px]">
             <motion.div
               initial={{ opacity: 0 }}
@@ -106,13 +107,17 @@ const Chapter = () => {
               <hr className="border-white w-[600px]" />
             </motion.div>
           </div> */}
-          <div className="z-1 flex justify-center">
+          {/* <div className="z-1 flex justify-center">
             <ScenarioSlide
               stories={stories}
               modalOpen={modalOpen}
               onSlideClick={handleSwiper}
             />
-          </div>
+          </div> */}
+          <CarouselContainer />
+        </div>
+        <div className="flex w-screen h-[100px] justify-center items-end">
+          <img className="w-screen h-[200px]" src="./grid.png" alt="" />
         </div>
       </div>
     </div>
