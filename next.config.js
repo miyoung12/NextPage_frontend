@@ -14,8 +14,9 @@ const nextConfig = {
   },
   images: {
     domains: [
-      'https://nextpage-bucket.s3.ap-northeast-2.amazonaws.com',
+      'nextpage-bucket.s3.ap-northeast-2.amazonaws.com',
       'oaidalleapiprodscus.blob.core.windows.net',
+      'bucketnextpage.s3.ap-northeast-2.amazonaws.com',
     ],
     // remotePatterns: [
     //   {

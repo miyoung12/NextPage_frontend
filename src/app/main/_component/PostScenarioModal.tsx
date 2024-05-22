@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Carousel from '../../_components/ImgCarousel'
 import Lottie from 'lottie-react'
 import lottieData from '../../../../public/lottie.json'
+import jwt from 'jsonwebtoken'
 
 interface PostScenarioModalProps {
   isOpen: boolean
@@ -94,7 +95,7 @@ const PostScenarioModal: React.FC<PostScenarioModalProps> = ({
         alert('문장을 입력하세요!')
       } else {
         setIsGenerating(true) // Lottie 보여주기 시작
-        const response = await axios.post(`/api/v2/stories/images`, null, {
+        const response = await axios.post(`/api/v2/stories/images`, {
           params: {
             content: content,
           },
@@ -135,8 +136,17 @@ const PostScenarioModal: React.FC<PostScenarioModalProps> = ({
   const handleClickSave = async () => {
     const selectedImageUrl = images[currentImageIndex] || '' // 현재 선택된 이미지
     setIsGenerating(true) // Lottie 보여주기 시작
+    // 토큰 가져오기
+    const token = localStorage.getItem('a')
+    console.log(token)
+    // const decodedToken = jwt.decode(token)
+    // console.log(decodedToken)
     try {
       const response = await axios.post(`/api/v2/stories`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         params: {
           parentId: null,
         },

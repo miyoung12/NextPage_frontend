@@ -4,12 +4,8 @@ import React from 'react'
 import TreeGraph from './TreeGraph'
 import Navbar from '../_components/Navbar'
 import Background from '../_components/Background'
-import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import ViewStoryModal from '../main/_component/ViewStoryModal'
-import PostStoryModal from '../main/_component/PostStoryModal'
 import axios from 'axios'
-import { useLocation } from 'react-router-dom'
 
 const Scenario = () => {
   //   const user = useRecoilValue(userState);
@@ -31,10 +27,10 @@ const Scenario = () => {
 
   const [scenario, setScenario] = useState([]) // d3 시나리오
   const [clickStoryId, setClickStoryId] = useState<{
-    rootId: number
+    rootId: number | null
     page: number
   }>({
-    rootId,
+    rootId: typeof rootId === 'string' ? parseInt(rootId) : rootId,
     page: 0,
   }) //클릭한 시나리오 조회
 

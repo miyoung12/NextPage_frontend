@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
-import ViewStoryModal from '../main/_component/ViewStoryModal'
-import PostStoryModal from '../main/_component/PostStoryModal'
+import ViewStoryModal from '../scenario/_component/ViewStoryModal'
+import PostStoryModal from '../scenario/_component/PostStoryModal'
 
 const TreeGraph = ({ scenario }) => {
   const svgRef = useRef(null)

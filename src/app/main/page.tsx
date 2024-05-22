@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback } from 'react'
 import ScenarioSlide from './_component/ScenarioSlide'
 import axios from 'axios'
-import PostScenarioModal from '../scenario/_component/PostScenarioModal'
+import PostScenarioModal from '../main/_component/PostScenarioModal'
 import Navbar from '../_components/Navbar'
 import Background from '../_components/Background'
 import jwt from 'jsonwebtoken'
@@ -61,7 +61,7 @@ const Main = () => {
       const response = await axios.get(`/api/v2/stories`)
       if (response.status === 200) {
         console.log(response.data.message) //전체 루트 스토리 조회
-        const stories = response.data.data.stories
+        const stories = response.data.data
         // const stories = response.data
         setStories(stories)
         console.log(stories)
@@ -87,7 +87,7 @@ const Main = () => {
   }, [])
 
   return (
-    <>
+    <div>
       <Background />
       <div className="flex w-[100vw] h-[100vh] flex-col justify-center items-center absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
         <div className="flex flex-col w-full h-full gap-[33px]">
@@ -170,7 +170,7 @@ const Main = () => {
           )}
         </div>
       </div>
-    </>
+    </div>
   )
 }
 export default Main
