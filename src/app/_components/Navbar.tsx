@@ -10,6 +10,7 @@ const Navbar = () => {
     name: string
   } | null>(null)
   const { nickname } = useUserStore()
+  // const modifiedNickname = nickname.split('#')[0]
   const [onLogOut, setOnLogOut] = useState(false)
   const modalRef = useRef<HTMLDivElement>(null)
 
@@ -27,54 +28,16 @@ const Navbar = () => {
     router.push('/')
   }
 
-  // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
-  const handleBackgroundClick = (e: MouseEvent) => {
-    // 배경 클릭 시 모달 닫기\
-    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-      setOnLogOut(false)
-    }
-  }
-
-  // const nicknameApi = async () => {
-  //   try {
-  //     const response = await axios.get(`/api/v1/nicknames/${user.user_id}`)
-  //     // console.log("nickname: ", response.data.data.nickname);
-  //     setNickname(response.data.data.nickname)
-  //   } catch (error) {
-  //     // console.error("Error: ", error);
-  //     localStorage.clear()
-  //     setUser({
-  //       user_id: 0,
-  //       nickname: '',
-  //     })
-  //   }
-  // }
-
-  useEffect(() => {
-    // nicknameApi()
-  }, [])
-
   useEffect(() => {
     const localStorageUsertoken = localStorage.getItem('a')
     const decodedUserToken = jwt.decode(localStorageUsertoken ?? '') as {
       name: string
     } | null
     setDecodedUserToken(decodedUserToken)
-    if (onLogOut) {
-      // 모달이 열릴 때 외부 클릭 이벤트 리스너 등록
-      document.addEventListener('mousedown', handleBackgroundClick)
-    } else {
-      // 모달이 닫힐 때 외부 클릭 이벤트 리스너 제거
-      document.removeEventListener('mousedown', handleBackgroundClick)
-    }
-    // 컴포넌트 언마운트 시에 이벤트 리스너 정리
-    return () => {
-      document.removeEventListener('mousedown', handleBackgroundClick)
-    }
-  }, [onLogOut])
+  }, [])
 
   return (
-    <div className="flex w-full h-[60px] px-[30px] my-[10px] justify-between items-center z-1">
+    <div className="flex w-full h-[60px] px-[30px] my-[9px] justify-between items-center">
       <button
         className="text-[25px] font-Minecraft text-white"
         onClick={handleNavigate}

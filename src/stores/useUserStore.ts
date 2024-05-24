@@ -32,8 +32,9 @@ export const useUserStore = create<MyState>()(
     (set) => ({
       nickname: '',
       setNickname: (newNickname: string) => {
-        const modifiedNickname = newNickname.split('#')[0] // 해시(#) 이전의 부분만 추출합니다.
-        set(() => ({ nickname: modifiedNickname }))
+        // const modifiedNickname = newNickname.split('#')[0] // 해시(#) 이전의 부분만 추출합니다.
+        // set(() => ({ nickname: modifiedNickname }))
+        set(() => ({ nickname: newNickname }))
       },
     }),
     {
