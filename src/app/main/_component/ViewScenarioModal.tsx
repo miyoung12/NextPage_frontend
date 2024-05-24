@@ -50,6 +50,7 @@ const ViewScenarioModal: React.FC<ViewScenarioModalProps> = ({
         const response = await axios.get(`/api/v2/stories/details/${rootId}`)
         if (response.status === 200) {
           console.log('단일 시나리오 조회')
+          console.log(response.data.data)
           setStory(response.data.data)
         }
       } catch (error) {
