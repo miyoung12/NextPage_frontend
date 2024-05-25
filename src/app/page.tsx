@@ -7,7 +7,6 @@ import Onboarding2 from '../app/_components/Onboarding2'
 import Onboarding3 from '../app/_components/Onboarding3'
 import Onboarding4 from '../app/_components/Onboarding4'
 import Image from 'next/image'
-// import book from '../../public/book.svg'
 import Background from '../app/_components/Background'
 import jwt from 'jsonwebtoken'
 import { useRouter } from 'next/navigation'
@@ -16,7 +15,8 @@ import { useUserStore } from '@/stores/useUserStore'
 const LandingPage = () => {
   const router = useRouter()
   const topScroll = useRef(null)
-  const { nickname, setNickname } = useUserStore()
+  const { nickname } = useUserStore()
+  // const modifiedNickname = nickname.split('#')[0]
   const [decodedToken, setDecodedToken] = useState<{ name: string } | null>(
     null,
   )
@@ -33,7 +33,6 @@ const LandingPage = () => {
       name: string
     } | null
     setDecodedToken(decodedToken)
-    console.log(nickname)
   }, [])
 
   return (
@@ -175,9 +174,9 @@ const LandingPage = () => {
         <Onboarding2 />
         <Onboarding1 />
         <Onboarding3 />
-        <>
+        <div>
           <Onboarding4 topScroll={topScroll} />
-        </>
+        </div>
       </div>
     </div>
   )

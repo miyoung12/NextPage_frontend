@@ -1,9 +1,6 @@
 'use client'
-
 import React from 'react'
 import Image from 'next/image'
-// import google from '../../../public/google.png'
-// import naver from '../../../public/naver.png'
 import Link from 'next/link'
 
 const SignupModal: React.FC = () => {

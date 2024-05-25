@@ -57,7 +57,7 @@ const Carousel: React.FC<CarouselProps> = ({
         </div>
       ))}
       {images.length > 1 && (
-        <>
+        <div>
           <button
             className="absolute z-10 top-1/2 left-[-2rem] transform -translate-y-1/2 text-white text-6xl"
             onClick={prevImage}
@@ -71,7 +71,7 @@ const Carousel: React.FC<CarouselProps> = ({
           >
             &#8250;
           </button>
-        </>
+        </div>
       )}
     </div>
   )

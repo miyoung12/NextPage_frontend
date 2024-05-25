@@ -45,7 +45,7 @@ const LoginModal: React.FC = () => {
 
   return (
     // <div className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50`}>
-    <>
+    <div>
       <div className="fixed">{/* <Background /> */}</div>
       <div className="flex flex-col w-[600px] h-[350px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 overflow-hidden">
         <div className="flex w-full h-[8vh] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
@@ -68,7 +68,7 @@ const LoginModal: React.FC = () => {
           </button>
         </div>
       </div>
-    </>
+    </div>
     // </div>
   )
 }
