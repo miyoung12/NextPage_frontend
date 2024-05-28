@@ -63,6 +63,10 @@ const Chapter = () => {
     setCurrentStoryIndex(index)
   }
 
+  const handleClickBack = () => {
+    window.history.back()
+  }
+
   useEffect(() => {
     RootStory()
   }, [])
@@ -119,6 +123,30 @@ const Chapter = () => {
         <div className="flex w-screen h-[100px] justify-center items-end">
           <img className="w-screen h-[200px]" src="./grid.png" alt="" />
         </div>
+      </div>
+      <div
+        onClick={handleClickBack}
+        className="w-[50px] h-[50px] text-white absolute left-8 bottom-8"
+      >
+        <svg
+          className="hover:scale-125 hover:opacity-35 h-full drop-shadow"
+          style={{
+            filter: 'drop-shadow(7px 1px 8px rgba(255, 255, 255, 0.7))',
+          }}
+          data-slot="icon"
+          fill="none"
+          strokeWidth="2"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+          ></path>
+        </svg>
       </div>
     </div>
   )

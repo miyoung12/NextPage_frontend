@@ -13,6 +13,8 @@ const CarouselContainer: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
   const cellCount: number = 7
   const [images, setImages] = useState<string[]>([]) // 이미지 URL을 저장할 상태
+  const [content, setContent] = useState<string>('')
+  const [userNickname, setUserNickname] = useState<string>('')
 
   const rotateCarousel = () => {
     if (carouselRef.current) {
@@ -22,12 +24,14 @@ const CarouselContainer: React.FC = () => {
   }
 
   const handlePrevButtonClick = () => {
-    setSelectedIndex((prevIndex) => prevIndex - 1)
+    setSelectedIndex(
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length,
+    ) // 인덱스가 음수가 되지 않도록 처리
     rotateCarousel()
   }
 
   const handleNextButtonClick = () => {
-    setSelectedIndex((prevIndex) => prevIndex + 1)
+    setSelectedIndex((prevIndex) => (prevIndex + 1) % images.length) // 인덱스가 배열 길이를 초과하지 않도록 처리
     rotateCarousel()
   }
 
@@ -44,6 +48,7 @@ const CarouselContainer: React.FC = () => {
           id: item.id,
           content: item.content,
           imageUrl: item.imageUrl,
+          userNickname: item.userNickname,
         }))
         setImages(imageUrlArray)
       } catch (error) {
@@ -53,25 +58,36 @@ const CarouselContainer: React.FC = () => {
     showBranch()
   }, [])
 
+  useEffect(() => {
+    if (images.length > 0) {
+      // 이미지가 변경될 때마다 해당 이미지의 content를 설정
+      setContent(images[selectedIndex]?.content || '')
+      setUserNickname(images[selectedIndex]?.userNickname || '')
+    }
+    rotateCarousel()
+  }, [selectedIndex, images])
+
   return (
     <>
-      <div className="scene mt-[100px] mb-[40px] relative w-[230px] h-[160px] mx-auto perspective-[1000px]">
-        <hr className="border-white w-[600px]" />
+      <div className="flex flex-col items-center h-[145px]">
+        <hr className="border-white w-[600px] " />
         <div className="flex items-center justify-between gap-[50px] px-[30px] py-[10px]">
           <div className="text-[20px] text-white">
             <span className="text-green-400">
               {/* {stories[currentStoryIndex]?.userNickname} */}
               {/* {images} */}
-              ㅇㅇ
+              {userNickname}
             </span>
           </div>
           <div className="w-[400px] text-[20px] text-white">
             {/* {stories[currentStoryIndex]?.content} */}
             {/* {images} */}
-            ㅇㅇ
+            {content}
           </div>
         </div>
         <hr className="border-white w-[600px]" />
+      </div>
+      <div className="scene mt-[30px] mb-[40px] relative w-[230px] h-[160px] mx-auto perspective-[1000px]">
         <div
           ref={carouselRef}
           className="carousel w-full h-full absolute transition-transform duration-1000"
@@ -111,7 +127,7 @@ const CarouselContainer: React.FC = () => {
             />
           </label>
         </p> */}
-      <p className="flex justify-center gap-[80px] w-full h-[30px] mt-[90px] relative z-10 text-center text-[20px] bg-opacity-80">
+      <div className="flex justify-center gap-[80px] w-full h-[30px] mt-[90px] relative z-10 text-center text-[20px] bg-opacity-80">
         <button
           className="previous-button inline-block w-[110px] text-center text-white border-gray-400 border-[2px] bg-blue-600"
           onClick={handlePrevButtonClick}
@@ -124,7 +140,7 @@ const CarouselContainer: React.FC = () => {
         >
           Next
         </button>
-      </p>
+      </div>
       {/* <p>
           Orientation:
           <label className="inline-block">

@@ -37,7 +37,8 @@ const Scenario = () => {
   const handleClickBack = () => {
     // 메인 페이지로 가기
     // navigate('/main')
-    window.location.href = '/main'
+    // window.location.href = '/main'
+    window.history.back()
   }
 
   useEffect(() => {
