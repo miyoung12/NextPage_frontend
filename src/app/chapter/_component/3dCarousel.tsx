@@ -1,6 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
 import axios from 'axios'
 
+interface Image {
+  id: number
+  userNickname: string
+  content: string
+  imageUrl: string
+}
+
 const CarouselContainer: React.FC = () => {
   const carouselRef = useRef<HTMLDivElement>(null)
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
@@ -33,9 +40,11 @@ const CarouselContainer: React.FC = () => {
       try {
         const response = await axios.get(`/api/v2/stories/branch/${storyId}`)
         console.log(response.data.data)
-        const imageUrlArray: string[] = response.data.data.map(
-          (item: any) => item.imageUrl,
-        )
+        const imageUrlArray = response.data.data.map((item: any) => ({
+          id: item.id,
+          content: item.content,
+          imageUrl: item.imageUrl,
+        }))
         setImages(imageUrlArray)
       } catch (error) {
         console.error('Error fetching story data:', error)
@@ -47,6 +56,22 @@ const CarouselContainer: React.FC = () => {
   return (
     <>
       <div className="scene mt-[100px] mb-[40px] relative w-[230px] h-[160px] mx-auto perspective-[1000px]">
+        <hr className="border-white w-[600px]" />
+        <div className="flex items-center justify-between gap-[50px] px-[30px] py-[10px]">
+          <div className="text-[20px] text-white">
+            <span className="text-green-400">
+              {/* {stories[currentStoryIndex]?.userNickname} */}
+              {/* {images} */}
+              ㅇㅇ
+            </span>
+          </div>
+          <div className="w-[400px] text-[20px] text-white">
+            {/* {stories[currentStoryIndex]?.content} */}
+            {/* {images} */}
+            ㅇㅇ
+          </div>
+        </div>
+        <hr className="border-white w-[600px]" />
         <div
           ref={carouselRef}
           className="carousel w-full h-full absolute transition-transform duration-1000"
@@ -55,7 +80,7 @@ const CarouselContainer: React.FC = () => {
             transformStyle: 'preserve-3d',
           }}
         >
-          {images.map((imageUrl, index) => (
+          {images.map((image, index) => (
             <div
               key={index}
               className="carousel__cell w-[210px] h-[140px] absolute left-[10px] top-[10px] border-[2px] border-black text-white text-center transition-transform-opacity duration-1000 rotate-y-${index * 40} translate-z-288`}"
@@ -65,7 +90,7 @@ const CarouselContainer: React.FC = () => {
             >
               <img
                 className="transition-opacity"
-                src={imageUrl} // 이미지 URL을 사용하여 이미지를 렌더링
+                src={image.imageUrl} // 이미지 URL을 사용하여 이미지를 렌더링
                 alt={`Image ${index + 1}`}
               />
             </div>
