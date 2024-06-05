@@ -16,7 +16,7 @@ const LandingPage = () => {
   const router = useRouter()
   const topScroll = useRef(null)
   const { nickname } = useUserStore()
-  // const modifiedNickname = nickname.split('#')[0]
+  const modifiedNickname = nickname.split('#')[0]
   const [decodedToken, setDecodedToken] = useState<{ name: string } | null>(
     null,
   )
@@ -136,8 +136,8 @@ const LandingPage = () => {
                 <div className="h-[20px]">
                   {decodedToken && (
                     <span className="text-white text-[18px]">
-                      <span className="text-green-400">{nickname}</span>님
-                      환영합니다!
+                      <span className="text-green-400">{modifiedNickname}</span>
+                      님 환영합니다!
                     </span>
                   )}
                 </div>
