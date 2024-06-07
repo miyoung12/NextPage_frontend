@@ -4,6 +4,7 @@ import Navbar from '../_components/Navbar'
 import ViewSession from './_componant/ViewSession'
 import FavoriteSession from './_componant/FavoriteSesstion'
 import Nicknameheader from '../mypage/_component/Nicknameheader'
+import RightSesstion from './_componant/RightSesstion'
 
 export default function bookmark() {
   return (
@@ -15,10 +16,7 @@ export default function bookmark() {
         <ViewSession />
         <div className="flex flex-col items-center h-56 text-white">
           <p className="text-center mb-4">스토리 목록</p>
-          <div className="flex flex-col items-center h-52 justify-between">
-            <Image src="/up.png" alt="up" height={10} width={40} />
-            <Image src="/down.png" alt="down" height={10} width={40} />
-          </div>
+          <RightSesstion />
         </div>
       </div>
       <Link
