@@ -11,19 +11,20 @@ export default function Mypage() {
       <div className="fixed flex flex-col justify-center items-center w-full">
         <Navbar />
         <Nicknameheader />
-        <div className="flex flex-col justify-center items-center border w-[768px] h-[56px] mt-2 border-white rounded2xl bg-white bg-opacity-10 ">
-          <p className="text-4xl text-green-400 ">My Story</p>
+        <div className="flex flex-col justify-center items-center border rounded-[10px] w-[768px] h-[56px] my-2 border-white rounded2xl bg-white bg-opacity-10 ">
+          <p className="text-4xl text-green-400 pt-[5px]">My Story</p>
           <Image
             className="absolute h-[2rem] w-[45rem]"
             src={Star}
             alt="star"
+            priority
           />
         </div>
-        <div className="flex flex-col w-[100vw] justify-center items-center mt-[8px]">
-          <div className="flex flex-col items-center">
-            <BlockBorad />
-            {/* <div className="h-full absolute overflow-y-aut"></div> */}
-          </div>
+        <div className="flex flex-col w-[100vw] justify-center items-center mt-[10px]">
+          {/* <div className="flex flex-col items-center"> */}
+          <BlockBorad />
+          {/* <div className="h-full absolute overflow-y-aut"></div> */}
+          {/* </div> */}
         </div>
       </div>
     </div>
