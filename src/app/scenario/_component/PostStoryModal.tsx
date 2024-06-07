@@ -137,8 +137,15 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
     const selectedImageUrl = images[currentImageIndex] || ''
     // Ok 버튼 클릭 시 /api/v1/stories/ 요청
     setIsGenerating(true) // Lottie 보여주기 시작
+    // 토큰 가져오기
+    const token = localStorage.getItem('a')
+    console.log(token)
     try {
       const response = await axios.post(`/api/v2/stories`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         params: {
           parentStoryID,
         },

@@ -10,7 +10,7 @@ const Navbar = () => {
     name: string
   } | null>(null)
   const { nickname } = useUserStore()
-  // const modifiedNickname = nickname.split('#')[0]
+  const modifiedNickname = nickname.split('#')[0]
   const [onLogOut, setOnLogOut] = useState(false)
   const modalRef = useRef<HTMLDivElement>(null)
 
@@ -55,7 +55,7 @@ const Navbar = () => {
                 onClick={handleLogOutModal}
                 className="text-green-400 hover:text-blue-600"
               >
-                {nickname}
+                {modifiedNickname}
               </span>
               님 환영합니다!
             </span>
