@@ -6,9 +6,14 @@ import { useState } from 'react'
 interface BlockProps {
   content: string
   imageUrl: string
+  priority?: boolean
 }
 
-export default function Block({ imageUrl, content }: BlockProps) {
+export default function Block({
+  imageUrl,
+  content,
+  priority = false,
+}: BlockProps) {
   const [modalOpen, setModalOpen] = useState(false)
 
   const closeModal = () => {
@@ -41,6 +46,7 @@ export default function Block({ imageUrl, content }: BlockProps) {
         className="rounded-lg"
         width={160}
         height={160}
+        priority={priority}
       />
     </div>
   )

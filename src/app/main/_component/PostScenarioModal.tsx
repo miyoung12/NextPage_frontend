@@ -95,16 +95,19 @@ const PostScenarioModal: React.FC<PostScenarioModalProps> = ({
         alert('문장을 입력하세요!')
       } else {
         setIsGenerating(true) // Lottie 보여주기 시작
-        const response = await axios.post(`/api/v2/stories/images`, {
-          params: {
-            content: content,
+        const response = await fetch(`/api/v2/stories/images`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify({
+            content: content,
+          }),
         })
-        // console.log(response.data.message)
-        if (response.status === 200) {
+        if (response.ok) {
+          const data = await response.json()
           console.log('이미지 생성 성공!')
-          const newImageUrl = response.data.data
-          console.log('newImageUrl: ', newImageUrl)
+          const newImageUrl = data.data
 
           if (newImageUrl !== undefined) {
             console.log('이미지 조회 성공!')
@@ -139,25 +142,24 @@ const PostScenarioModal: React.FC<PostScenarioModalProps> = ({
     // 토큰 가져오기
     const token = localStorage.getItem('a')
     console.log(token)
-    // const decodedToken = jwt.decode(token)
-    // console.log(decodedToken)
     try {
-      const response = await axios.post(`/api/v2/stories`, {
+      const response = await fetch(`/api/v2/stories`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
         },
-        params: {
-          parentId: null,
-        },
-        imageUrl: selectedImageUrl,
-        content: content,
+        body: JSON.stringify({
+          parentId: -1, //null
+          imageUrl: selectedImageUrl,
+          content: content,
+        }),
       })
 
       // 성공적으로 응답을 받았을 때 처리
-      if (response.status === 201) {
-        console.log(response.data.message)
-        console.log(response.data.data)
+      if (response.ok) {
+        console.log(response.text)
         await handleUpdate()
         closeModal()
       }

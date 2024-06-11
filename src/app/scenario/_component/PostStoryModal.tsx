@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState, ChangeEvent } from 'react'
-import axios from 'axios'
 import { motion } from 'framer-motion'
 import Carousel from '../../../app/_components/ImgCarousel'
 import Lottie from 'lottie-react'
@@ -11,6 +10,7 @@ interface PostStoryModalProps {
   isOpen: boolean
   closeModal: () => void
   isCreateModalOpen: boolean
+  scenarioAPI: () => void
 }
 
 const PostStoryModal: React.FC<PostStoryModalProps> = ({
@@ -18,6 +18,7 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
   isOpen,
   closeModal,
   isCreateModalOpen,
+  scenarioAPI,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null)
   //   const userId = useRecoilValue(userState).user_id;
@@ -97,14 +98,16 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
         alert('문장을 입력하세요!')
       } else {
         setIsGenerating(true) // Lottie 보여주기 시작
-        const response = await axios.post(`/api/v2/stories/images`, null, {
-          params: {
-            content: content,
+        const response = await fetch('/api/v2/stories/images', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ content: content }),
         })
-        if (response.status === 200) {
-          console.log('이미지 생성 성공!')
-          const newImageUrl = response.data.data
+        if (response.ok) {
+          const data = await response.json()
+          const newImageUrl = data.data
           console.log('newImageUrl: ', newImageUrl)
 
           if (newImageUrl !== undefined) {
@@ -139,25 +142,26 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
     setIsGenerating(true) // Lottie 보여주기 시작
     // 토큰 가져오기
     const token = localStorage.getItem('a')
-    console.log(token)
     try {
-      const response = await axios.post(`/api/v2/stories`, {
+      console.log(parentStoryID)
+      const response = await fetch(`/api/v2/stories`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        params: {
-          parentStoryID,
-        },
-        imageUrl: selectedImageUrl,
-        content: content,
+        body: JSON.stringify({
+          parentId: parentStoryID,
+          imageUrl: selectedImageUrl,
+          content: content,
+        }),
       })
 
       // 성공적으로 응답을 받았을 때 처리
-      if (response.status === 201) {
-        console.log(response.data.message)
-        console.log(response.data.data)
+      if (response.ok) {
+        console.log('스토리 생성 성공')
         closeModal()
+        scenarioAPI()
       }
     } catch (error) {
       console.error('스토리 생성 중 에러 발생:', error)
@@ -284,8 +288,8 @@ const PostStoryModal: React.FC<PostStoryModalProps> = ({
                   className="relative w-[250px] text-center text-[18px] bg-green-400 border-2 border-gray-500 text-black hover:bg-blue-600 hover:text-white hover:shadow-blue-600"
                   onClick={handleClick}
                 >
-                  사진 생성하기&nbsp;
-                  <span className="absolute bottom-[5px] font-['DungGeunMo'] text-[11px] text-gray-600">
+                  <span className="pr-[10px]">Create image &nbsp;</span>
+                  <span className="absolute bottom-[5px] right-[5px] font-['DungGeunMo'] text-[11px] text-gray-600">
                     ({3 - generationCount}회 남음)
                   </span>
                 </button>
