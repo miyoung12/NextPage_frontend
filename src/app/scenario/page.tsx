@@ -5,7 +5,6 @@ import TreeGraph from './TreeGraph'
 import Navbar from '../_components/Navbar'
 import Background from '../_components/Background'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 
 const Scenario = () => {
   //   const user = useRecoilValue(userState);
@@ -19,8 +18,6 @@ const Scenario = () => {
   // const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
   const rootId = searchParams.get('rootId')
-
-  console.log(rootId)
 
   // const [isStoryModalOpen, setIsStoryModalOpen] = useState(false)
   // const [isCreateModalOpen, setIsCreateModalOpen] = useState(false) // 모달 관리
@@ -41,33 +38,31 @@ const Scenario = () => {
     window.history.back()
   }
 
-  useEffect(() => {
+  const scenarioAPI = async () => {
     //이 코드가 useEffect 내부에 있어야 렌더링 시 바로 트리 그래프 출력됨
     const searchParams = new URLSearchParams(location.search)
     const rootId = searchParams.get('rootId')
     console.log('rootId: ', rootId)
-    const scenarioAPI = async () => {
-      try {
-        const response = await axios.get(`/api/v2/stories/${rootId}`)
-        console.log('response: ', response.data.data)
-        console.log(rootId)
-        if (response.status == 200) {
-          const stories = response.data.data
-          setScenario(stories)
-          const rootIdNull = stories.find(
-            (story: { parentId: null }) => story.parentId === null,
-          ) // parentId가 null인 요소를 찾습니다.
-          console.log('parentId가 null인 id 값:', rootIdNull.id)
-        }
-      } catch (error) {
-        console.error('Error fetching scenario data:', error)
+    if (!rootId) return
+    try {
+      const response = await fetch(`/api/v2/stories/${rootId}`)
+      if (response.ok) {
+        const data = await response.json()
+        const stories = data.data
+        setScenario(stories)
+        const rootIdNull = stories.find(
+          (story: { parentId: null }) => story.parentId === null,
+        ) // parentId가 null인 요소를 찾습니다.
+        console.log('parentId가 null인 id 값:', rootIdNull.id)
       }
+    } catch (error) {
+      console.error('Error fetching scenario data:', error)
     }
+  }
 
-    if (rootId) {
-      // rootId가 존재할 때만 API 호출
-      scenarioAPI()
-    }
+  useEffect(() => {
+    // rootId가 존재할 때만 API 호출
+    scenarioAPI()
     // }, [rootId, isCreateModalOpen])
   }, [rootId])
 
@@ -77,7 +72,7 @@ const Scenario = () => {
       <div className="flex w-[100vw] h-[100vh] flex-col justify-center items-center absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
         <div className="overflow-hidden flex flex-col w-full h-full">
           <Navbar />
-          <TreeGraph scenario={scenario} />
+          <TreeGraph scenario={scenario} scenarioAPI={scenarioAPI} />
         </div>
       </div>
       <div className="flex gap-1 text-gray-400 text-[14px] absolute right-10 bottom-8">
@@ -117,8 +112,8 @@ const Scenario = () => {
           aria-hidden="true"
         >
           <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
           ></path>
         </svg>
