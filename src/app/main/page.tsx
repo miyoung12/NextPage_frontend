@@ -46,7 +46,6 @@ const Main = () => {
   // }
   const handleNavigate = () => {
     // '/landingpage'로 페이지 이동
-    console.log('눌림눌림')
     router.push('/')
   }
   const handleUpdate = useCallback(() => {

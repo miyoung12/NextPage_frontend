@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import jwt from 'jsonwebtoken'
 import { useUserStore } from '@/stores/useUserStore'
@@ -14,19 +14,22 @@ const Navbar = () => {
   const [onLogOut, setOnLogOut] = useState(false)
   const modalRef = useRef<HTMLDivElement>(null)
 
-  const handleNavigate = () => {
-    // '/landingpage'로 페이지 이동
+  const handleNavigate = useCallback(() => {
     router.push('/')
-  }
+  }, [router])
 
-  const handleLogOutModal = () => {
-    setOnLogOut(true)
-  }
+  const handleLogOutModal = useCallback(() => {
+    setOnLogOut((prevState) => !prevState)
+  }, [])
 
-  const handleClickLogOut = () => {
+  const handleClickLogOut = useCallback(() => {
     localStorage.clear()
     router.push('/')
-  }
+  }, [router])
+
+  const handleClickMyPage = useCallback(() => {
+    router.push('/mypage')
+  }, [router])
 
   useEffect(() => {
     const localStorageUsertoken = localStorage.getItem('a')
@@ -103,7 +106,9 @@ const Navbar = () => {
                       fill="black"
                     />
                   </svg>
-                  <span className="text-[10px]">My page</span>
+                  <span onClick={handleClickMyPage} className="text-[10px]">
+                    My page
+                  </span>
                 </div>
               </div>
             )}

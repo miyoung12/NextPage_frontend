@@ -14,11 +14,12 @@ const RedirectPage: React.FC = () => {
       console.log(token)
       const decodedToken = jwt.decode(token)
       if (decodedToken?.sub != 'null') {
-        // 기존 회원일 경우
+        // 기존 회원일 경우 토큰으로 사용자 조회
         fetch('http://localhost:8080/api/v2/users/details', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
+            // 'Access-Control-Allow-Origin': '*',
           },
         })
           .then((response) => {
@@ -40,8 +41,7 @@ const RedirectPage: React.FC = () => {
               error,
             )
           })
-        const redirectPage = '/'
-        window.location.href = redirectPage
+        window.location.href = '/'
       }
     } else {
       console.error('토큰이 없습니다.')
