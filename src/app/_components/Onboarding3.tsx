@@ -8,10 +8,6 @@ const Onboarding3 = () => {
     width: '100vw',
     height: '960px',
     overflow: 'hidden',
-    // backgroundImage: `url(${backgroundImageUrl})`,
-    // backgroundSize: "cover", // 이미지를 커버하도록 설정
-    // backgroundPosition: "center", // 이미지를 중앙에 두기
-    // backgroundRepeat: "no-repeat", // 이미지를 반복하지 않도록 설정
   }
 
   return (
@@ -20,7 +16,6 @@ const Onboarding3 = () => {
       style={style}
     >
       <div className="relative w-[1000px] min-w-[1000px] h-[600px] m-[50ox] text-[45px]">
-        {' '}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -47,10 +42,11 @@ const Onboarding3 = () => {
           }}
         >
           <Image
-            // className="absolute top-[-360px] left-[400px] w-[1000px] animate-slide-left"
-            className="absolute top-[-360px] left-[440px] w-[1000px] animate-slide-bl"
+            className="absolute top-[-360px] left-[440px] w-[1000px] h-auto animate-slide-bl object-contain filter drop-shadow-[0 0 14px rgba(255, 255, 255, 0.424)]"
+            // className="absolute top-[calc(50%-360px)] left-[calc(50%-440px)] w-[1000px] h-auto animate-slide-bl object-contain filter drop-shadow-[0 0 14px rgba(255, 255, 255, 0.424)]"
             style={{
               filter: 'drop-shadow(0 0 14px rgba(255, 255, 255, 0.424))',
+              height: 'auto', // height를 auto로 설정
             }}
             src="/d3.svg"
             alt="d3"
