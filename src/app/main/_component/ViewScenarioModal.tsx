@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 import { useRef, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
@@ -47,19 +46,21 @@ const ViewScenarioModal: React.FC<ViewScenarioModalProps> = ({
   useEffect(() => {
     const ShowRootScenario = async () => {
       try {
-        const response = await axios.get(`/api/v2/stories/details/${rootId}`)
-        if (response.status === 200) {
+        const response = await fetch(`/api/v2/stories/details/${rootId}`)
+        if (response.ok) {
+          const data = await response.json()
           console.log('단일 시나리오 조회')
-          console.log(response.data.data)
-          setStory(response.data.data)
+          console.log(data.data)
+          setStory(data.data)
+        } else {
+          console.error('단일 시나리오 조회 실패', response.statusText)
         }
       } catch (error) {
-        console.error(error)
+        console.error('단일 시나리오 조회 실패', error)
       }
     }
 
     if (isOpen) {
-      // isOpen이 true이고 rootId가 존재할 때에만 API 호출
       ShowRootScenario()
     }
   }, [])
@@ -116,7 +117,12 @@ const ViewScenarioModal: React.FC<ViewScenarioModalProps> = ({
           <div className="relative flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 text-[33px] font-Minecraft">
             <span>SCENARIO</span>
             <div className="text-gray-400 text-[14px] absolute bottom-[8px] right-[32px]">
-              @ {story?.userNickname ? `${story.userNickname}` : 'LOADING...'}
+              @{' '}
+              <span>
+                {story?.userNickname.split('#')[0]
+                  ? `${story.userNickname.split('#')[0]}`
+                  : 'LOADING...'}
+              </span>
             </div>
           </div>
           <div className="flex flex-col w-full h-[615px] justify-center items-center gap-[16px] bg-[#000000ae] text-white border-2 border-gray-400 ">
