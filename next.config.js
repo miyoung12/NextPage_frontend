@@ -36,7 +36,7 @@ const nextConfig = {
       },
       {
         source: '/scenario/[rootId]',
-        destination: '/scenario?=${rootId}',
+        destination: '/scenario?rootId=:rootId',
       },
     ]
   },

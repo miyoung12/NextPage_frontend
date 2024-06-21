@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
@@ -73,26 +72,26 @@ const StoryModal: React.FC<StoryModalProps> = ({
     const storyId = storyID.id
     const storyAPI = async () => {
       try {
-        const response = await axios.get(`/api/v2/stories/details/${storyId}`)
-        // console.log('response: ', response.data.data)
-        if (response.data.data) {
+        const response = await fetch(`/api/v2/stories/details/${storyId}`)
+        const data = await response.json()
+        if (data.data) {
           // 데이터가 존재할 때만 state 업데이트
           setStory({
-            id: response.data.data.id,
-            content: response.data.data.content,
-            imageUrl: response.data.data.imageUrl,
-            userNickname: response.data.data.userNickname,
-            parentId: response.data.data.parentId,
-            childId: response.data.data.childId,
-            childContent: response.data.data.childContent,
+            ...data.data,
+            //   id: data.data.id,
+            //   content: data.data.content,
+            //   imageUrl: data.data.imageUrl,
+            //   userNickname: data.data.userNickname,
+            //   parentId: data.data.parentId,
+            //   childId: data.data.childId,
+            //   childContent: data.data.childContent,
           })
+          // setStory(story)
         }
       } catch (error) {
         console.error('Error fetching story data:', error)
       }
     }
-
-    // console.log(rootId)
     storyAPI()
   }, [storyID, nextModalKey])
 
@@ -146,7 +145,10 @@ const StoryModal: React.FC<StoryModalProps> = ({
               PAGE <span className="text-white">{storyID.page}</span>{' '}
             </span>
             <div className="text-gray-400 text-[14px] absolute bottom-[8px] right-[32px]">
-              @ {story?.userNickname ? `${story.userNickname}` : 'LOADING...'}
+              @{' '}
+              {story?.userNickname.split('#')[0]
+                ? `${story.userNickname.split('#')[0]}`
+                : 'LOADING...'}
             </div>
           </div>
           <div className="flex flex-col w-full h-[615px] justify-center items-center gap-[16px] bg-[#000000ae] text-white border-2 border-gray-400 ">

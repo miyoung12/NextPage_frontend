@@ -24,11 +24,11 @@ const Navbar = () => {
 
   const handleClickLogOut = useCallback(() => {
     localStorage.clear()
-    router.push('/')
-  }, [router])
+    window.location.href = '/' // window.location을 사용하여 페이지를 새로고침
+  }, [])
 
   const handleClickMyPage = useCallback(() => {
-    router.push('/mypage')
+    window.location.href = '/mypage'
   }, [router])
 
   useEffect(() => {
