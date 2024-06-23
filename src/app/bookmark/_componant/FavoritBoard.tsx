@@ -9,6 +9,7 @@ const ITEMS_PER_PAGE = 6
 interface favprops {
   imageUrl: string
   content: string
+  storyId: number
 }
 
 export default function FavoritBlock() {
@@ -33,13 +34,13 @@ export default function FavoritBlock() {
       })
       .then((data) => {
         setData(data.data)
-        console.log(data.data)
+        // console.log(data.data)
         setTotalPages(Math.ceil(data.data.length / ITEMS_PER_PAGE))
       })
       .catch((error) => {
         console.error('Error:', error) // 에러 처리
       })
-  }, [])
+  })
 
   const handleChangePage = (newPage: number) => {
     setPage(newPage)
@@ -49,13 +50,13 @@ export default function FavoritBlock() {
   const selectedData = data.slice(startIndex, startIndex + ITEMS_PER_PAGE)
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="border mt-1 left-10 top-[60px] w-[624px] border-white h-auto">
+      <div className="border border-white">
         <div className="grid grid-cols-3">
           {selectedData.map((item, index) => (
             <MarkBlock
               key={index}
               imageUrl={item.imageUrl}
-              content={item.content}
+              storyId={item.storyId}
             />
           ))}
           {selectedData.length < ITEMS_PER_PAGE &&

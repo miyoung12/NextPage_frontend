@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import BookmarkBtn from './BookmarkBtn'
 
 interface StoryModalProps {
   storyID: {
@@ -142,6 +143,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
           transition={{ duration: 1 }}
         >
           <div className="relative flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 text-[33px] font-Minecraft">
+            {story && <BookmarkBtn id={story.id} />}
             <span>
               PAGE <span className="text-white">{storyID.page}</span>{' '}
             </span>

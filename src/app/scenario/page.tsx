@@ -54,6 +54,7 @@ const Scenario = () => {
         if (response.status == 200) {
           const stories = response.data.data
           setScenario(stories)
+          console.log(stories)
           const rootIdNull = stories.find(
             (story: { parentId: null }) => story.parentId === null,
           ) // parentId가 null인 요소를 찾습니다.
