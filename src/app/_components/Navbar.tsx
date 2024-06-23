@@ -99,7 +99,20 @@ const Navbar = () => {
                   </div>
                 </div>
                 <div className="flex gap-[5px] hover:text-blue-600">
-                  <IoMdBook className="w-3 h-3" />
+                  <svg
+                    className="w-[10px] "
+                    data-slot="icon"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 22 22"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M9 3H13V4H14V5H15V9H14V10H13V11H9V10H8V9H7V5H8V4H9V3ZM10 8V9H12V8H13V6H12V5H10V6H9V8H10ZM7 12H15V13H17V14H18V15H19V19H3V15H4V14H5V13H7V12ZM6 16H5V17H17V16H16V15H14V14H8V15H6V16Z"
+                      fill="black"
+                    />
+                  </svg>
                   <div onClick={handleClickMyPage} className="text-[10px]">
                     My Page
                   </div>
