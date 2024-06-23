@@ -114,13 +114,13 @@ const Navbar = () => {
                     />
                   </svg>
                   <div onClick={handleClickMyPage} className="text-[10px]">
-                    My Page
+                    My page
                   </div>
                 </div>
                 <div className="flex gap-[5px] hover:text-blue-600">
                   <IoBookmarkOutline className="w-3 h-3" />
                   <div onClick={handleClickBookMark} className="text-[10px]">
-                    BookMark
+                    Bookmark
                   </div>
                 </div>
               </div>
