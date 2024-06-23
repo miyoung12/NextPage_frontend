@@ -11,7 +11,7 @@ export default function Mypage() {
       <div className="fixed flex flex-col justify-center items-center w-full">
         <Navbar />
         <Nicknameheader />
-        <div className="flex flex-col justify-center items-center border rounded-[10px] w-[768px] h-[56px] my-2 border-white rounded2xl bg-white bg-opacity-10 ">
+        <div className="flex flex-col justify-center items-center border rounded-[10px] w-[960px] h-[56px] mt-10 mb-2 border-white rounded2xl bg-white bg-opacity-10 ">
           <p className="text-4xl text-green-400 pt-[5px]">My Story</p>
           <Image
             className="absolute h-[2rem] w-[45rem]"

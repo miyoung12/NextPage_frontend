@@ -3,17 +3,14 @@
 import React from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback } from 'react'
 import ScenarioSlide from './_component/ScenarioSlide'
-import axios from 'axios'
 import PostScenarioModal from '../main/_component/PostScenarioModal'
 import Navbar from '../_components/Navbar'
 import Background from '../_components/Background'
 import jwt from 'jsonwebtoken'
 
 const Main = () => {
-  const router = useRouter()
   const [modalOpen, setModalOpen] = useState(false)
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0)
   const [decodedUserToken, setDecodedUserToken] = useState<{
@@ -41,33 +38,27 @@ const Main = () => {
     }
   }
 
-  // const handleUpdate = () => {
-  //   window.location.reload()
-  // }
-  const handleNavigate = () => {
-    // '/landingpage'로 페이지 이동
-    console.log('눌림눌림')
-    router.push('/')
-  }
   const handleUpdate = useCallback(() => {
     if (stories !== null) {
       RootStory()
     }
-    setStories(stories) //한 번 테스트해보기
+    setStories(stories)
   }, [])
 
   const RootStory = async () => {
     try {
-      const response = await axios.get(`/api/v2/stories`)
-      if (response.status === 200) {
-        console.log(response.data.message) //전체 루트 스토리 조회
-        const stories = response.data.data
-        // const stories = response.data
+      //전체 루트 스토리 조회
+      const response = await fetch('/api/v2/stories')
+      if (response.ok) {
+        const data = await response.json()
+        const stories = data.data
         setStories(stories)
         console.log(stories)
+      } else {
+        console.error('루트 스토리 조회 중 에러 발생:', response.statusText)
       }
     } catch (error) {
-      console.error('루트 스토리 조회 중 에러 발생')
+      console.error('루트 스토리 조회 중 에러 발생:', error)
     }
   }
 
@@ -82,8 +73,6 @@ const Main = () => {
       name: string
     } | null
     setDecodedUserToken(decodedUserToken)
-    console.log(modalOpen)
-    console.log(decodedUserToken)
   }, [])
 
   return (
@@ -107,7 +96,7 @@ const Main = () => {
               <div className="flex items-center justify-between gap-[50px] px-[30px] py-[10px]">
                 <div className="text-[20px] text-white">
                   <span className="text-green-400">
-                    {stories[currentStoryIndex]?.userNickname}
+                    {stories[currentStoryIndex]?.userNickname.split('#')[0]}
                   </span>
                 </div>
                 <div className="w-[400px] text-[20px] text-white">
@@ -158,15 +147,12 @@ const Main = () => {
               <span>나만의 시나리오를 작성해보세요!</span>
             </div>
           </div>
-          {modalOpen && decodedUserToken ? (
+          {modalOpen && decodedUserToken && (
             <PostScenarioModal
               isOpen={modalOpen}
               closeModal={closeModal}
               handleUpdate={handleUpdate}
             />
-          ) : (
-            // <>{handleNavigate()}</>
-            <div>a</div>
           )}
         </div>
       </div>

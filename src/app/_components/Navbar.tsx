@@ -1,10 +1,9 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import jwt from 'jsonwebtoken'
 import { useUserStore } from '@/stores/useUserStore'
 import { IoBookmarkOutline } from 'react-icons/io5'
-import { IoMdBook } from 'react-icons/io'
 
 const Navbar = () => {
   const router = useRouter()
@@ -16,27 +15,26 @@ const Navbar = () => {
   const [onLogOut, setOnLogOut] = useState(false)
   const modalRef = useRef<HTMLDivElement>(null)
 
-  const handleNavigate = () => {
-    // '/landingpage'로 페이지 이동
+  const handleNavigate = useCallback(() => {
     router.push('/')
-  }
+  }, [router])
 
-  const handleLogOutModal = () => {
-    setOnLogOut(true)
-  }
+  const handleLogOutModal = useCallback(() => {
+    setOnLogOut((prevState) => !prevState)
+  }, [])
 
-  const handleClickLogOut = () => {
+  const handleClickLogOut = useCallback(() => {
     localStorage.clear()
-    router.push('/')
-  }
+    window.location.href = '/' // window.location을 사용하여 페이지를 새로고침
+  }, [])
 
-  const handleClickMyPage = () => {
-    router.push('/mypage')
-  }
+  const handleClickMyPage = useCallback(() => {
+    window.location.href = '/mypage'
+  }, [router])
 
-  const handleClickBookMark = () => {
-    router.push('/bookmark')
-  }
+  const handleClickBookMark = useCallback(() => {
+    window.location.href = '/bookmark'
+  }, [router])
 
   useEffect(() => {
     const localStorageUsertoken = localStorage.getItem('a')

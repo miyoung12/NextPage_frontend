@@ -4,7 +4,7 @@ import ViewStoryModal from '../scenario/_component/ViewStoryModal'
 import PostStoryModal from '../scenario/_component/PostStoryModal'
 import useRightStory from '@/stores/useRightStory'
 
-const TreeGraph = ({ scenario }) => {
+const TreeGraph = ({ scenario, scenarioAPI }) => {
   const svgRef = useRef(null)
   const [clickStoryId, setClickStoryId] = useState(null)
   const [isStoryModalOpen, setIsStoryModalOpen] = useState(false)
@@ -172,6 +172,8 @@ const TreeGraph = ({ scenario }) => {
       // eslint 경고 무시하는 주석
       // eslint-disable-next-line no-inner-declarations
       function update() {
+        const delayFactor = (d) => 250 + 300 * d.depth
+
         g.selectAll('path')
           .data(links)
           .enter()
@@ -182,30 +184,31 @@ const TreeGraph = ({ scenario }) => {
           .style('transform', 'rotateX(20deg) rotateY(8deg) rotateZ(-8deg)')
           .transition()
           .duration(500)
-          .attr('stroke-width', 18)
+          .attr('stroke-width', 7)
           .style('stroke-dasharray', '18, 10') // dashed 스타일 설정
           .style('filter', 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.5))')
           .attr('d', (d) => lineGenerator([d.source, d.target])) // 직선으로 변경
-          .delay((d) => 500 + 250 * d.source.depth)
+          .delay((d) => 250 * d.source.depth)
+        // .delay(delayFactor)
 
-        g.selectAll('rect') // 이미지 뒤에 rect를 추가
+        g.selectAll('rect') // 사각형 배경 추가
           .data(root.descendants())
           .enter()
           .append('rect')
-
           .attr('x', (d) => d.y - 80)
           .attr('y', (d) => d.x - 80)
           .style('transform', 'rotateX(20deg) rotateY(8deg) rotateZ(-8deg)')
           .style('fill', 'none')
-          .transition()
-          .duration(400)
           .attr('width', 160)
           .attr('height', 160)
           .style('filter', 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))')
           .style('fill', 'rgba(255, 255, 255, 0.9)')
-          .delay((d) => 250 + 300 * d.depth)
+          .transition()
+          .duration(400)
+          // .delay((d) => 250 + 300 * d.depth)
+          .delay(delayFactor)
 
-        g.selectAll('image')
+        g.selectAll('image') //이미지 추가
           .data(root.descendants())
           .enter()
           .append('image')
@@ -213,16 +216,20 @@ const TreeGraph = ({ scenario }) => {
           .attr('y', (d) => d.x - 75)
           .style('transform', 'rotateX(20deg) rotateY(8deg) rotateZ(-8deg)')
           .style('fill', 'none')
-          .transition()
-          .duration(400)
-          .attr('xlink:href', (d) => d.data.image)
           .attr('width', 150)
           .attr('height', 150)
-          .delay((d) => 250 + 300 * d.depth)
-
-        g.selectAll('image').on('click', (event, d) =>
-          handleClickStory(d.data.name, d.depth + 1),
-        ) // 클릭 이벤트 핸들러 추가
+          .attr('xlink:href', (d) => d.data.image)
+          .transition()
+          .duration(400)
+          .delay(delayFactor)
+          .on('end', () => {
+            g.selectAll('image').on('click', (event, d) =>
+              handleClickStory(d.data.name, d.depth + 1),
+            )
+          })
+        // .transition()
+        // .duration(400)
+        // .delay((d) => 250 + 300 * d.depth)
       }
     }
   }, [scenario])
@@ -248,6 +255,7 @@ const TreeGraph = ({ scenario }) => {
             isOpen={isCreateModalOpen}
             closeModal={closeModals}
             isCreateModalOpen={isCreateModalOpen}
+            scenarioAPI={scenarioAPI}
           />
         </div>
       )}

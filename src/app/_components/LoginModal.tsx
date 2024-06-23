@@ -1,26 +1,30 @@
 'use client'
 import { useUserStore } from '@/stores/useUserStore'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 const LoginModal: React.FC = () => {
   const router = useRouter()
   const { nickname, setNickname } = useUserStore()
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value)
   }
+
   const handleSubmit = () => {
     if (typeof window !== 'undefined') {
       const searchParams = new URLSearchParams(window.location.search)
       const email = searchParams.get('e')
+
       if (email !== null) {
         localStorage.setItem('e', email)
       }
       setNickname(nickname)
       console.log(email)
       console.log(nickname)
-      router.replace('/')
+      // router.replace('/')
 
-      // POST 요청 보내기
+      // 회원가입 POST 요청 보내기
       fetch('http://localhost:8080/api/v2/users', {
         method: 'POST',
         headers: {
@@ -36,6 +40,11 @@ const LoginModal: React.FC = () => {
         })
         .then((data) => {
           console.log(data) // POST 요청에 대한 응답 처리
+          const accessToken = data.data.accessToken
+          if (accessToken) {
+            localStorage.setItem('a', accessToken)
+            router.replace('/main')
+          }
         })
         .catch((error) => {
           console.error('Error:', error) // 에러 처리
@@ -46,7 +55,7 @@ const LoginModal: React.FC = () => {
   return (
     // <div className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50`}>
     <div>
-      <div className="fixed">{/* <Background /> */}</div>
+      <div className="">{/* <Background /> */}</div>
       <div className="flex flex-col w-[600px] h-[350px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 overflow-hidden">
         <div className="flex w-full h-[8vh] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           WELCOME

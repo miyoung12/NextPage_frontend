@@ -4,9 +4,11 @@ export default {
   theme: {
     extend: {
       screens: {
-        md: '925px',
-        lg: '1210px',
-        xl: '1490px',
+        // md: '925px',
+        // lg: '1210px',
+        // xl: '1490px',
+        md: '1024px',
+        lg: '1280px',
       },
       fontFamily: {
         Minecraft: ['Minecraft'],
