@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
 import ViewStoryModal from '../scenario/_component/ViewStoryModal'
 import PostStoryModal from '../scenario/_component/PostStoryModal'
+import useRightStory from '@/stores/useRightStory'
 
 const TreeGraph = ({ scenario, scenarioAPI }) => {
   const svgRef = useRef(null)
   const [clickStoryId, setClickStoryId] = useState(null)
   const [isStoryModalOpen, setIsStoryModalOpen] = useState(false)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false) // 모달 관리
+  const { updateRightState } = useRightStory()
 
   const handleClickStory = (id, page) => {
     // console.log('d: ', d)
@@ -17,6 +19,7 @@ const TreeGraph = ({ scenario, scenarioAPI }) => {
       setClickStoryId({ id, page })
       // console.log(id)
       // console.log(page)
+      updateRightState(id)
       setIsStoryModalOpen(true)
     } else {
       setIsCreateModalOpen(true)

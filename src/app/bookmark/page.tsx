@@ -8,23 +8,25 @@ import RightSesstion from './_componant/RightSesstion'
 
 export default function bookmark() {
   return (
-    <div className="fixed w-screen">
+    <div className="fixed h-screen w-screen">
       <Navbar />
-      <Nicknameheader />
-      <div className="flex w-full h-[500px] justify-between px-10 my-2">
-        <FavoriteSession />
-        <ViewSession />
-        <div className="flex flex-col items-center h-56 text-white">
-          <p className="text-center mb-4">스토리 목록</p>
-          <RightSesstion />
+      <div className="mt-10">
+        <Nicknameheader />
+        <div className="flex justify-center gap-16 px-10 my-2">
+          <FavoriteSession />
+          <ViewSession />
+          <div className="flex flex-col items-center text-white">
+            <p className="text-center mb-4">스토리 목록</p>
+            <RightSesstion />
+          </div>
         </div>
+        <Link
+          href="/main"
+          className="flex justify-center text-white hover:underline"
+        >
+          스토리 작성하러 가기
+        </Link>
       </div>
-      <Link
-        href="/main"
-        className="flex justify-center text-white hover:underline"
-      >
-        스토리 작성하러 가기
-      </Link>
     </div>
   )
 }

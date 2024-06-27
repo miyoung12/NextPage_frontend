@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import jwt from 'jsonwebtoken'
 import { useUserStore } from '@/stores/useUserStore'
+import { IoBookmarkOutline } from 'react-icons/io5'
 
 const Navbar = () => {
   const router = useRouter()
@@ -29,6 +30,10 @@ const Navbar = () => {
 
   const handleClickMyPage = useCallback(() => {
     window.location.href = '/mypage'
+  }, [router])
+
+  const handleClickBookMark = useCallback(() => {
+    window.location.href = '/bookmark'
   }, [router])
 
   useEffect(() => {
@@ -65,7 +70,7 @@ const Navbar = () => {
             {onLogOut && (
               <div
                 ref={modalRef}
-                className="flex flex-col items-center gap-[5px] absolute left-0 top-[30px] p-[5px] bg-white text-black z-10"
+                className="flex flex-col items-first gap-[5px] absolute left-0 top-[30px] p-[5px] bg-white text-black z-10 "
                 style={{
                   filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.324))',
                 }}
@@ -87,9 +92,9 @@ const Navbar = () => {
                       d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
                     />
                   </svg>
-                  <span onClick={handleClickLogOut} className="text-[10px]">
+                  <div onClick={handleClickLogOut} className="text-[10px]">
                     Log Out
-                  </span>
+                  </div>
                 </div>
                 <div className="flex gap-[5px] hover:text-blue-600">
                   <svg
@@ -106,9 +111,15 @@ const Navbar = () => {
                       fill="black"
                     />
                   </svg>
-                  <span onClick={handleClickMyPage} className="text-[10px]">
+                  <div onClick={handleClickMyPage} className="text-[10px]">
                     My page
-                  </span>
+                  </div>
+                </div>
+                <div className="flex gap-[5px] hover:text-blue-600">
+                  <IoBookmarkOutline className="w-3 h-3" />
+                  <div onClick={handleClickBookMark} className="text-[10px]">
+                    Bookmark
+                  </div>
                 </div>
               </div>
             )}
