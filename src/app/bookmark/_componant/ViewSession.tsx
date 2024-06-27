@@ -2,19 +2,37 @@
 import Image from 'next/image'
 import GoButton from './GoButton'
 import useBookMark from '@/stores/useBookMark'
+import useRightStory from '@/stores/useRightStory'
+import { useEffect, useState } from 'react'
+import DeleteButton from './DeleteButton'
 
 export default function ViewSession() {
-  const { favImageUrl, favContent } = useBookMark()
+  const [content, setContent] = useState('')
+  const { favImageUrl } = useBookMark()
+  const { bookStroy } = useRightStory()
+
+  useEffect(() => {
+    if (bookStroy && bookStroy.length > 0) {
+      console.log(bookStroy[bookStroy.length - 1].content)
+      setContent(bookStroy[bookStroy.length - 1].content)
+    }
+  }, [bookStroy])
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-center items-center border w-72 h-10 border-white  bg-white bg-opacity-10">
         <p className="text-2xl text-green-400">PAGE</p>
       </div>
-      {favContent && favImageUrl ? (
+      {favImageUrl ? (
         <div>
-          <Image src={favImageUrl} alt="test" height={288} width={288} />
+          <Image
+            src={favImageUrl}
+            alt="bookmark image"
+            height={288}
+            width={288}
+          />
           <div className="mt-4 text-white text-sm w-72 min-h-24 bg-opacity-20 p-2 border-dashed border-2 border-gray-500 bg-black">
-            {favContent}
+            {content}
           </div>
         </div>
       ) : (
@@ -27,8 +45,9 @@ export default function ViewSession() {
           </div>
         </div>
       )}
-      <div className="flex justify-center w-72 h-[30px] ">
-        <GoButton />
+      <div className="flex justify-between w-72 h-[30px] ">
+        <GoButton bookStory0={bookStroy[0]} />
+        <DeleteButton />
       </div>
     </div>
   )

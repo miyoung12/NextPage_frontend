@@ -43,6 +43,7 @@ const Scenario = () => {
     const searchParams = new URLSearchParams(location.search)
     const rootId = searchParams.get('rootId')
     console.log('rootId: ', rootId)
+
     if (!rootId) return
     try {
       const response = await fetch(`/api/v2/stories/${rootId}`)

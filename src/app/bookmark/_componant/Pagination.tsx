@@ -26,15 +26,13 @@ function Pagination({ onChangePage, totalPages, page }: PaginationProps) {
   }, [])
 
   const prePages = () => {
-    const newPage = Math.max(1, currentPage[0] - LIMIT)
+    const newPage = Math.max(1, page - 1)
     onChangePage(newPage)
-    initPageNumber(totalPages, newPage)
   }
 
   const nextPages = () => {
-    const newPage = Math.min(totalPages, currentPage[0] + LIMIT)
+    const newPage = Math.min(totalPages, page + 1)
     onChangePage(newPage)
-    initPageNumber(totalPages, newPage)
   }
 
   useEffect(() => {
@@ -43,7 +41,7 @@ function Pagination({ onChangePage, totalPages, page }: PaginationProps) {
 
   return (
     <div className="flex mt-4">
-      <button disabled={currentPage[0] === 1} onClick={prePages} type="button">
+      <button disabled={page === 1} onClick={prePages} type="button">
         <FaArrowLeft color="white" />
       </button>
       <ul>
@@ -62,11 +60,7 @@ function Pagination({ onChangePage, totalPages, page }: PaginationProps) {
           </li>
         ))}
       </ul>
-      <button
-        disabled={currentPage[currentPage.length - 1] === totalPages}
-        onClick={nextPages}
-        type="button"
-      >
+      <button disabled={page === totalPages} onClick={nextPages} type="button">
         <FaArrowRight color="white" />
       </button>
     </div>
