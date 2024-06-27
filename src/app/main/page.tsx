@@ -53,9 +53,28 @@ const Main = () => {
         const data = await response.json()
         const stories = data.data
         setStories(stories)
-        console.log(stories)
-      } else {
-        console.error('루트 스토리 조회 중 에러 발생:', response.statusText)
+      } else if (response.status == 400) {
+        alert('로그인 세션이 만료 되었습니다.')
+        localStorage.clear()
+        window.location.href = '/'
+      } else if (response.status == 401) {
+        const accessToken = localStorage.getItem('a')
+        const refreshToken = localStorage.getItem('r')
+        fetch('/api/v2/users/auth/token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+            'REFRESH-TOKEN': `${refreshToken}`,
+          },
+        })
+          .then((response) => {
+            return response.json()
+          })
+          .then((data) => {
+            console.log('재발급 토큰', data.data)
+            localStorage.setItem('a', data.data)
+          })
       }
     } catch (error) {
       console.error('루트 스토리 조회 중 에러 발생:', error)
