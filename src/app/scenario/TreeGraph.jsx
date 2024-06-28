@@ -12,13 +12,8 @@ const TreeGraph = ({ scenario, scenarioAPI }) => {
   const { updateRightState } = useRightStory()
 
   const handleClickStory = (id, page) => {
-    // console.log('d: ', d)
-    // const id = d.data.name
-    // const page = d.depth + 1
     if (id >= 0) {
       setClickStoryId({ id, page })
-      // console.log(id)
-      // console.log(page)
       updateRightState(id)
       setIsStoryModalOpen(true)
     } else {

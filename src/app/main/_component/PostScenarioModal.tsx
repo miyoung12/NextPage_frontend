@@ -82,8 +82,6 @@ const PostScenarioModal: React.FC<PostScenarioModalProps> = ({
   //이미지 캐러셀의 현재 인덱스 변경 이벤트를 처리
   const handleCurrentIndexChange = (index: number) => {
     setCurrentImageIndex(index)
-    // currentIndex를 활용한 로직을 추가하세요.
-    // console.log("image_index: ", index);
   }
 
   const CreateScenario = async () => {

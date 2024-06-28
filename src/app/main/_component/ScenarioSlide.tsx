@@ -18,13 +18,9 @@ import ViewScenarioModal from '../../main/_component/ViewScenarioModal'
 
 interface ScenarioSlideProps {
   stories: {
-    // id: number
     id: number
-    // user_id: number
-    // user_nickname: string
     userNickname: string
     content: string
-    // image_url: string
     imageUrl: string
   }[]
   modalOpen: boolean
@@ -112,9 +108,6 @@ const ScenarioSlide: React.FC<ScenarioSlideProps> = ({
   }, [stories])
 
   useEffect(() => {
-    // console.log('currentSlideIndex: ', currentSlideIndex)
-    // console.log('stories: ', stories[currentSlideIndex])
-    // console.log(stories[currentSlideIndex].imageUrl)
     onSlideClick(currentSlideIndex)
   }, [currentSlideIndex])
 
@@ -148,8 +141,6 @@ const ScenarioSlide: React.FC<ScenarioSlideProps> = ({
                       'drop-shadow(7px 1px 8px rgba(255, 252, 234, 0.759))',
                     display: 'block',
                     width: 'full',
-                    // width: 'full',
-                    // height: '400px',
                   }}
                   width={400}
                   height={400}

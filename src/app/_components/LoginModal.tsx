@@ -1,7 +1,6 @@
 'use client'
 import { useUserStore } from '@/stores/useUserStore'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
 
 const LoginModal: React.FC = () => {
   const router = useRouter()

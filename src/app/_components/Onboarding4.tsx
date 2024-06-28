@@ -44,7 +44,7 @@ const Onboarding4: React.FC<Onboaring4Props> = ({ topScroll }) => {
               style={{
                 backfaceVisibility: 'hidden', // 뒷면이 보이지 않게
               }}
-              src="/createModal.png"
+              src="/createmodal.png"
               alt="생성 모달"
               width={400}
               height={400}
@@ -55,7 +55,7 @@ const Onboarding4: React.FC<Onboaring4Props> = ({ topScroll }) => {
                 transform: 'rotateY(180deg) translateZ(1px)', // 미리 뒤집어 놓기
                 filter: 'drop-shadow(0 0 12px rgba(255, 255, 255, 0.424))',
               }}
-              src="/storyModal.png"
+              src="/storymodal.png"
               alt="스토리 모달"
               width={400}
               height={400}

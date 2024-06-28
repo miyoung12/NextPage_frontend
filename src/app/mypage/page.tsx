@@ -21,10 +21,7 @@ export default function Mypage() {
           />
         </div>
         <div className="flex flex-col w-[100vw] justify-center items-center mt-[10px]">
-          {/* <div className="flex flex-col items-center"> */}
           <BlockBorad />
-          {/* <div className="h-full absolute overflow-y-aut"></div> */}
-          {/* </div> */}
         </div>
       </div>
     </div>

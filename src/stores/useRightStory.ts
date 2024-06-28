@@ -1,14 +1,19 @@
 import { create } from 'zustand'
 
+interface BookStory {
+  id: string
+  imageUrl: string
+  content: string
+}
+
 interface RightState {
-  bookStroy: string
-  updateRightState: (newBookStroy: string) => void
+  bookStroy: BookStory[]
+  updateRightState: (newBookStroy: BookStory[]) => void
 }
 
 const useRightStory = create<RightState>((set) => ({
-  // imageUrl, content를 이 곳에서 가져왔다.
-  bookStroy: '',
-  updateRightState: (newBookStroy: string) =>
+  bookStroy: [],
+  updateRightState: (newBookStroy: BookStory[]) =>
     set({
       bookStroy: newBookStroy,
     }),
