@@ -88,10 +88,9 @@ const StoryModal: React.FC<StoryModalProps> = ({
     storyAPI()
   }, [storyID, nextModalKey])
 
-  const router = useRouter()
   const handleClickChapter = () => {
     const StoryId = storyID.id
-    router.push(`/chapter/?storyId=${StoryId}`)
+    window.location.href = `/chapter/?storyId=${StoryId}`
     console.log(StoryId)
   }
   return (
