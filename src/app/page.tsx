@@ -22,9 +22,9 @@ const LandingPage = () => {
   )
   const startButton = () => {
     if (decodedToken) {
-      router.push('/main')
+      window.location.href = '/main'
     } else {
-      router.push('/signup')
+      window.location.href = '/signup'
     }
   }
   useEffect(() => {

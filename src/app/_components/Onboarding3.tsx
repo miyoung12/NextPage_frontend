@@ -1,5 +1,4 @@
 import React from 'react'
-// import d3 from '../../../public/d3.svg'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 
@@ -43,7 +42,6 @@ const Onboarding3 = () => {
         >
           <Image
             className="absolute top-[-360px] left-[440px] w-[1000px] h-auto animate-slide-bl object-contain filter drop-shadow-[0 0 14px rgba(255, 255, 255, 0.424)]"
-            // className="absolute top-[calc(50%-360px)] left-[calc(50%-440px)] w-[1000px] h-auto animate-slide-bl object-contain filter drop-shadow-[0 0 14px rgba(255, 255, 255, 0.424)]"
             style={{
               filter: 'drop-shadow(0 0 14px rgba(255, 255, 255, 0.424))',
               height: 'auto', // height를 auto로 설정

@@ -14,7 +14,6 @@ const ViewScenarioModal: React.FC<ViewScenarioModalProps> = ({
   closeStory,
   rootId,
 }) => {
-  //   const navigate = useNavigate()
   const [story, setStory] = useState<{
     id: number
     content: string

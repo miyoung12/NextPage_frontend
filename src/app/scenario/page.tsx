@@ -9,16 +9,6 @@ import { useEffect, useState } from 'react'
 const Scenario = () => {
   const [scenario, setScenario] = useState([]) // d3 시나리오
   const [rootId, setRootId] = useState<number | null>(null)
-  // const [clickStoryId, setClickStoryId] = useState<{
-  //   rootId: number | null
-  //   page: number
-  // }>({
-  //   rootId: typeof rootId === 'string' ? parseInt(rootId) : rootId,
-  //   page: 0,
-  // }) //클릭한 시나리오 조회
-
-  // const searchParams = new URLSearchParams(location.search)
-  // const rootId = searchParams.get('rootId')
 
   useEffect(() => {
     // 클라이언트 사이드에서만 실행되도록 확인
@@ -55,12 +45,6 @@ const Scenario = () => {
       console.error('Error fetching scenario data:', error)
     }
   }
-
-  // useEffect(() => {
-  //   // rootId가 존재할 때만 API 호출
-  //   scenarioAPI()
-  //   // }, [rootId, isCreateModalOpen])
-  // }, [rootId])
 
   return (
     <div className="overflow-hidden">

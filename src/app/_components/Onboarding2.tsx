@@ -1,24 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-// import img1 from '../../../public/img1.png'
-// import img2 from '../../../public/img2.png'
-// import img3 from '../../../public/img3.png'
-// import img4 from '../../../public/img4.png'
-// import img5 from '../../../public/img5.png'
-// import img6 from '../../../public/img6.png'
-// import img7 from '../../../public/img7.png'
-// import img8 from '../../../public/img8.png'
-// import img9 from '../../../public/img9.jpeg'
-// import img10 from '../../../public/img10.jpeg'
-// import img11 from '../../../public/img11.png'
-// import img12 from '../../../public/img12.png'
-// import img13 from '../../../public/img13.png'
-// import img14 from '../../../public/img14.png'
-// import img15 from '../../../public/img15.png'
-// import img16 from '../../../public/img16.png'
-// import img17 from '../../../public/img17.png'
-// import img18 from '../../../public/img18.png'
 
 const Onboarding2 = () => {
   const bgstyle = {
@@ -33,6 +15,28 @@ const Onboarding2 = () => {
   const imgStyle2 = {
     animation: 'imgmove2 8s linear infinite',
   }
+
+  const images1 = [
+    '/img1.png',
+    '/img5.png',
+    '/img7.png',
+    '/img9.jpeg',
+    '/img11.png',
+    '/img13.png',
+    '/img15.png',
+    '/img18.png',
+  ]
+
+  const images2 = [
+    '/img2.png',
+    '/img6.png',
+    '/img8.png',
+    '/img10.jpeg',
+    '/img12.png',
+    '/img14.png',
+    '/img16.png',
+    '/img17.png',
+  ]
   return (
     <div
       className="flex justify-between px-[160px] overflow-hidden"
@@ -51,43 +55,51 @@ const Onboarding2 = () => {
           className="flex flex-col flex-nowrap imgmove w-[142px] h-full gap-[15px]"
           style={imgStyle}
         >
-          <Image width={142} height={142} src="/img1.png" alt="" />
-          <Image width={142} height={142} src="/img5.png" alt="" />
-          <Image width={142} height={142} src="/img7.png" alt="" />
-          <Image width={142} height={142} src="/img9.jpeg" alt="" />
-          <Image width={142} height={142} src="/img11.png" alt="" />
-          <Image width={142} height={142} src="/img13.png" alt="" />
-          <Image width={142} height={142} src="/img15.png" alt="" />
-          <Image width={142} height={142} src="/img18.png" alt="" />
-          <Image width={142} height={142} src="/img1.png" alt="" />
-          <Image width={142} height={142} src="/img5.png" alt="" />
-          <Image width={142} height={142} src="/img7.png" alt="" />
-          <Image width={142} height={142} src="/img9.jpeg" alt="" />
-          <Image width={142} height={142} src="/img11.png" alt="" />
-          <Image width={142} height={142} src="/img13.png" alt="" />
-          <Image width={142} height={142} src="/img15.png" alt="" />
-          <Image width={142} height={142} src="/img18.png" alt="" />
+          {images1.map((src, index) => (
+            <Image
+              key={index}
+              width={142}
+              height={142}
+              src={src}
+              alt=""
+              priority
+            />
+          ))}
+          {images1.map((src, index) => (
+            <Image
+              key={index + images1.length}
+              width={142}
+              height={142}
+              src={src}
+              alt=""
+              priority
+            />
+          ))}
         </div>
         <div
           className="flex flex-col flex-nowrap imgmove2 w-[142px] h-full gap-[15px]"
           style={imgStyle2}
         >
-          <Image width={142} height={142} src="/img2.png" alt="" />
-          <Image width={142} height={142} src="/img6.png" alt="" />
-          <Image width={142} height={142} src="/img8.png" alt="" />
-          <Image width={142} height={142} src="/img10.jpeg" alt="" />
-          <Image width={142} height={142} src="/img12.png" alt="" />
-          <Image width={142} height={142} src="/img14.png" alt="" />
-          <Image width={142} height={142} src="/img16.png" alt="" />
-          <Image width={142} height={142} src="/img17.png" alt="" />
-          <Image width={142} height={142} src="/img2.png" alt="" />
-          <Image width={142} height={142} src="/img6.png" alt="" />
-          <Image width={142} height={142} src="/img8.png" alt="" />
-          <Image width={142} height={142} src="/img10.jpeg" alt="" />
-          <Image width={142} height={142} src="/img12.png" alt="" />
-          <Image width={142} height={142} src="/img14.png" alt="" />
-          <Image width={142} height={142} src="/img16.png" alt="" />
-          <Image width={142} height={142} src="/img17.png" alt="" />
+          {images2.map((src, index) => (
+            <Image
+              key={index}
+              width={142}
+              height={142}
+              src={src}
+              alt=""
+              priority
+            />
+          ))}
+          {images2.map((src, index) => (
+            <Image
+              key={index + images2.length}
+              width={142}
+              height={142}
+              src={src}
+              alt=""
+              priority
+            />
+          ))}
         </div>
         <div
           className="h-[200px] items-center text-green-400 text-[130px] font-['Minecraft']"

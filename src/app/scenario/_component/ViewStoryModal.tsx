@@ -79,15 +79,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
           // 데이터가 존재할 때만 state 업데이트
           setStory({
             ...data.data,
-            //   id: data.data.id,
-            //   content: data.data.content,
-            //   imageUrl: data.data.imageUrl,
-            //   userNickname: data.data.userNickname,
-            //   parentId: data.data.parentId,
-            //   childId: data.data.childId,
-            //   childContent: data.data.childContent,
           })
-          // setStory(story)
         }
       } catch (error) {
         console.error('Error fetching story data:', error)
