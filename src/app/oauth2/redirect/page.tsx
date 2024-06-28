@@ -7,18 +7,20 @@ const RedirectPage: React.FC = () => {
   const { nickname, setNickname } = useUserStore()
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
-    const token = urlParams.get('a')
+    const accessToken = urlParams.get('a')
+    const refreshToken = urlParams.get('r')
     // 토큰이 존재하는지 확인하고 로컬 스토리지에 저장
-    if (token) {
-      localStorage.setItem('a', token)
-      console.log(token)
-      const decodedToken = jwt.decode(token)
+    if (accessToken && refreshToken) {
+      localStorage.setItem('a', accessToken)
+      localStorage.setItem('r', refreshToken)
+      console.log(accessToken)
+      const decodedToken = jwt.decode(accessToken)
       if (decodedToken?.sub != 'null') {
         // 기존 회원일 경우 토큰으로 사용자 조회
         fetch('http://localhost:8080/api/v2/users/details', {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
             // 'Access-Control-Allow-Origin': '*',
           },
         })
