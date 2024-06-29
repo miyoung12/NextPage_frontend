@@ -2,15 +2,17 @@
 import React, { useState } from 'react'
 import useRightStory from '@/stores/useRightStory'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 
 export default function RightSesstion({}) {
   const { bookStroy } = useRightStory()
   const [currentPage, setCurrentPage] = useState(1)
-  const router = useRouter()
 
   const handleClickStory = (index: number) => () => {
-    router.push(`/scenario?rootId=${bookStroy[0].id}`)
+    if (bookStroy.length > 0) {
+      window.location.href = `/scenario?rootId=${bookStroy[0].id}`
+    } else {
+      console.error('No stories available.')
+    }
   }
 
   // 초기값이나 타입을 확인하여 기본적으로 빈 배열로 설정

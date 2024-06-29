@@ -19,15 +19,6 @@ const nextConfig = {
       'bucketnextpage.s3.ap-northeast-2.amazonaws.com',
     ],
     loader: 'default',
-
-    // remotePatterns: [
-    //   {
-    //     protocol: 'https',
-    //     hostname: 'nextpage-bucket.s3.ap-northeast-2.amazonaws.com',
-    //     port: '',
-    //     pathname: '/image/**',
-    //   },
-    // ],
   },
   async rewrites() {
     return [
@@ -41,7 +32,6 @@ const nextConfig = {
       },
     ]
   },
-  // trailingSlash: true,
 }
 
 https: module.exports = nextConfig
