@@ -39,7 +39,7 @@ const Chapter = () => {
 
   const RootStory = async () => {
     try {
-      const response = await fetch(`/api/v2/stories`)
+      const response = await fetch(`api/v2/stories`)
       if (response.ok) {
         const data = await response.json()
         const stories = data.data

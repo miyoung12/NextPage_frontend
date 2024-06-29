@@ -41,7 +41,7 @@ const CarouselContainer: React.FC = () => {
 
     const showBranch = async () => {
       try {
-        const response = await fetch(`/api/v2/stories/branch/${storyId}`)
+        const response = await fetch(`api/v2/stories/branch/${storyId}`)
         const data = await response.json()
         console.log(data.data)
         const imageUrlArray = data.data.map((item: any) => ({

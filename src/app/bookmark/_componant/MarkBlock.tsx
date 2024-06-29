@@ -15,7 +15,7 @@ export default function MarkBlock({ imageUrl, storyId }: favprops) {
   const handleClick = async () => {
     updateBookMark(imageUrl, storyId)
     try {
-      const response = await axios.get(`/api/v2/stories/branch/${storyId}`)
+      const response = await axios.get(`api/v2/stories/branch/${storyId}`)
       updateRightState(response.data.data)
     } catch (error) {
       console.error('Error fetching story data:', error)

@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const HOST = process.env.HOST_URL
 const nextConfig = {
   swcMinify: true,
   compiler: {
@@ -24,7 +25,7 @@ const nextConfig = {
     return [
       {
         source: '/:path*', // 들어오는 요청 경로 패턴
-        destination: 'http://localhost:8080/:path*', // 라우팅하려는 경로
+        destination: HOST + ':8080/:path*', // 라우팅하려는 경로
       },
       {
         source: '/scenario/[rootId]',

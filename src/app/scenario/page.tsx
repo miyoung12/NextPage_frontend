@@ -31,7 +31,7 @@ const Scenario = () => {
 
   const scenarioAPI = async (rootId: number) => {
     try {
-      const response = await fetch(`/api/v2/stories/${rootId}`)
+      const response = await fetch(`api/v2/stories/${rootId}`)
       if (response.ok) {
         const data = await response.json()
         const stories = data.data

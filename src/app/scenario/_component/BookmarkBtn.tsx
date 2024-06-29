@@ -15,7 +15,7 @@ const BookmarkBtn: React.FC<BookmarkBtnProps> = ({ id }) => {
     setBookmark(!bookmark)
     if (bookmark) {
       console.log('delete', bookStroy)
-      fetch(`/api/v2/mypage/bookmarks/${bookStroy}`, {
+      fetch(`api/v2/mypage/bookmarks/${bookStroy}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ const BookmarkBtn: React.FC<BookmarkBtnProps> = ({ id }) => {
         })
     } else {
       console.log('delete', bookStroy)
-      fetch(`/api/v2/mypage/bookmarks/${bookStroy}`, {
+      fetch(`api/v2/mypage/bookmarks/${bookStroy}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const BookmarkBtn: React.FC<BookmarkBtnProps> = ({ id }) => {
     }
   }
   useEffect(() => {
-    fetch('/api/v2/mypage/bookmarks', {
+    fetch('api/v2/mypage/bookmarks', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

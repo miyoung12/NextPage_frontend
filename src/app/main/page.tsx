@@ -48,7 +48,7 @@ const Main = () => {
   const RootStory = async () => {
     try {
       //전체 루트 스토리 조회
-      const response = await fetch('/api/v2/stories')
+      const response = await fetch('api/v2/stories')
       if (response.ok) {
         const data = await response.json()
         const stories = data.data
@@ -60,7 +60,7 @@ const Main = () => {
       } else if (response.status == 401) {
         const accessToken = localStorage.getItem('a')
         const refreshToken = localStorage.getItem('r')
-        fetch('/api/v2/users/auth/token', {
+        fetch('api/v2/users/auth/token', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
