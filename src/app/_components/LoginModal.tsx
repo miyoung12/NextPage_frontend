@@ -24,7 +24,7 @@ const LoginModal: React.FC = () => {
       // router.replace('/')
 
       // 회원가입 POST 요청 보내기
-      fetch('http://localhost:8080/api/v2/users', {
+      fetch('api/v2/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -45,7 +45,7 @@ const ViewScenarioModal: React.FC<ViewScenarioModalProps> = ({
   useEffect(() => {
     const ShowRootScenario = async () => {
       try {
-        const response = await fetch(`/api/v2/stories/details/${rootId}`)
+        const response = await fetch(`api/v2/stories/details/${rootId}`)
         if (response.ok) {
           const data = await response.json()
           console.log('단일 시나리오 조회')

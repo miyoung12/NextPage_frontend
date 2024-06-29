@@ -19,7 +19,7 @@ export default function FavoritBlock() {
 
   useEffect(() => {
     const token = localStorage.getItem('a')
-    fetch('/api/v2/mypage/bookmarks', {
+    fetch('api/v2/mypage/bookmarks', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

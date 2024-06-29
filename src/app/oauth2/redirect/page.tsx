@@ -17,7 +17,7 @@ const RedirectPage: React.FC = () => {
       const decodedToken = jwt.decode(accessToken)
       if (decodedToken?.sub != 'null') {
         // 기존 회원일 경우 토큰으로 사용자 조회
-        fetch('http://localhost:8080/api/v2/users/details', {
+        fetch('api/v2/users/details', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${accessToken}`,

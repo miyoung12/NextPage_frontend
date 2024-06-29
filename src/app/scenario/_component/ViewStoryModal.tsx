@@ -73,7 +73,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
     const storyId = storyID.id
     const storyAPI = async () => {
       try {
-        const response = await fetch(`/api/v2/stories/details/${storyId}`)
+        const response = await fetch(`api/v2/stories/details/${storyId}`)
         const data = await response.json()
         if (data.data) {
           // 데이터가 존재할 때만 state 업데이트

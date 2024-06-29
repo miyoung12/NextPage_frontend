@@ -6,7 +6,7 @@ export default function DeleteButton() {
   const handleClickView = () => {
     const token = localStorage.getItem('a')
     console.log('delete', favStoryId)
-    fetch(`/api/v2/mypage/bookmarks/${favStoryId}`, {
+    fetch(`api/v2/mypage/bookmarks/${favStoryId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

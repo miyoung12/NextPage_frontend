@@ -20,7 +20,7 @@ export default function BlockBoard() {
     const token = localStorage.getItem('a')
     setIsLoading(true)
     try {
-      const response = await fetch(`/api/v2/mypage/mystories?page=${page}`, {
+      const response = await fetch(`api/v2/mypage/mystories?page=${page}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
