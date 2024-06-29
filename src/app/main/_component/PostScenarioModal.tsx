@@ -93,7 +93,7 @@ const PostScenarioModal: React.FC<PostScenarioModalProps> = ({
         alert('문장을 입력하세요!')
       } else {
         setIsGenerating(true) // Lottie 보여주기 시작
-        const response = await fetch(`/api/v2/stories/images`, {
+        const response = await fetch(`api/v2/stories/images`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ const PostScenarioModal: React.FC<PostScenarioModalProps> = ({
     const token = localStorage.getItem('a')
     console.log(token)
     try {
-      const response = await fetch(`/api/v2/stories`, {
+      const response = await fetch(`api/v2/stories`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
